@@ -7,6 +7,7 @@
         "@astrojs/mdx": "^4.0.5",
         "@astrojs/rss": "^4.0.11",
         "@astrojs/sitemap": "^3.2.1",
+        "@fontsource/twinkle-star": "^5.1.1",
         "astro": "^5.1.5",
       },
       "devDependencies": {
@@ -90,6 +91,8 @@
     "@esbuild/win32-ia32": ["@esbuild/win32-ia32@0.24.2", "", { "os": "win32", "cpu": "ia32" }, "sha512-q+iGUwfs8tncmFC9pcnD5IvRHAzmbwQ3GPS5/ceCyHdjXubwQWI12MKWSNSMYLJMq23/IUCvJMS76PDqXe1fxA=="],
 
     "@esbuild/win32-x64": ["@esbuild/win32-x64@0.24.2", "", { "os": "win32", "cpu": "x64" }, "sha512-7VTgWzgMGvup6aSqDPLiW5zHaxYJGTO4OokMjIlrCtf+VpEL+cXKtCvg723iguPYI5oaUNdS+/V7OU2gvXVWEg=="],
+
+    "@fontsource/twinkle-star": ["@fontsource/twinkle-star@5.1.1", "", {}, "sha512-VH7FzMtvmri3xLpBKxGTbi6VMUNxKxCDK7Axxz8RjTzc1HHpmY7CAt0AWlWT9jGwgDDPtAX/IBLq5w2k7QxByQ=="],
 
     "@img/sharp-darwin-arm64": ["@img/sharp-darwin-arm64@0.33.5", "", { "optionalDependencies": { "@img/sharp-libvips-darwin-arm64": "1.0.4" }, "os": "darwin", "cpu": "arm64" }, "sha512-UT4p+iz/2H4twwAoLCqfA9UH5pI6DggwKEGuaPy7nCVQ8ZsiY5PIcrRvD1DzuY3qYL07NtIQcWnBSY/heikIFQ=="],
 

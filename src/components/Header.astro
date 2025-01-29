@@ -6,7 +6,7 @@ import { SITE_TITLE } from '../consts';
 <header>
 	<nav>
 		<div>
-			<span style="color:#1e3a8a">Andrew Makenzi</span>
+			<span id="name" style="color:#1e3a8a">Andrew Makenzi</span>
 		</div>
 
 		<div class="internal-links">
@@ -61,7 +61,7 @@ import { SITE_TITLE } from '../consts';
 		align-items: center;
 		justify-content: space-between;
 		padding: 20px;
-		border-bottom: 2px solid #d2d2d2;
+		border-bottom: 1px solid #d2d2d2;
 	}
 	nav a {
 		color: var(--black);
@@ -91,6 +91,11 @@ import { SITE_TITLE } from '../consts';
 
 	.internal-links a {
 		margin-left: 20px;
+	}
+
+	span#name {
+		font-family: "Twinkle Star", cursive;
+		font-weight: bold;
 	}
 
 	@media (max-width: 720px) {
