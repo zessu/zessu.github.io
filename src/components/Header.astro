@@ -7,16 +7,16 @@ import { SITE_TITLE } from '../consts';
 	<nav>
 		<div>
 			<span style="color:#1e3a8a">Andrew Makenzi</span>
-			</div>
-			
-			<div class="internal-links">
+		</div>
+
+		<div class="internal-links">
 				<div>
 				<HeaderLink href="/">🏡 Home</HeaderLink>
 				<HeaderLink href="/blog">📘 Articles</HeaderLink>
 				<HeaderLink href="/about">🧑‍💻 About Me</HeaderLink>
 				</div>
 
-			</div>
+		</div>
 		<div>
 			<div class="social-links">
 				<a href="https://twitter.com/amackzie" target="_blank">
@@ -78,13 +78,21 @@ import { SITE_TITLE } from '../consts';
 		display: flex;
 	}
 
-	div.internal-links {
+	div.social-links {
+		gap: 10px;
+	}
+
+	.internal-links {
 		display: flex;
 		flex-direction: row;
 		align-items: center;
-		gap: 100px;
 
 	}
+
+	.internal-links a {
+		margin-left: 20px;
+	}
+
 	@media (max-width: 720px) {
 		.social-links {
 			display: none;
