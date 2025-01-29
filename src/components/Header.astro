@@ -5,10 +5,11 @@ import { SITE_TITLE } from '../consts';
 
 <header>
 	<nav>
+		<div>
+			<span style="color:#1e3a8a">Andrew Makenzi</span>
+			</div>
+			
 			<div class="internal-links">
-				<div>
-				<span style="color:#1e3a8a">Andrew Makenzi</span>
-				</div>
 				<div>
 				<HeaderLink href="/">🏡 Home</HeaderLink>
 				<HeaderLink href="/blog">📘 Articles</HeaderLink>
@@ -59,15 +60,17 @@ import { SITE_TITLE } from '../consts';
 		flex-direction: row;
 		align-items: center;
 		justify-content: space-between;
+		padding: 20px;
+		border-bottom: 2px solid #d2d2d2;
 	}
 	nav a {
-		padding: 1em 0.5em;
 		color: var(--black);
 		border-bottom: 4px solid transparent;
 		text-decoration: none;
 	}
 	nav a.active {
 		text-decoration: none;
+		font-weight: bolder;
 		border-bottom-color: var(--accent);
 	}
 	.social-links,
