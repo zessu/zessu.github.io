@@ -2,7 +2,6 @@
 title: 'How to Create Impact at Any Company You Join'
 description: 'How to Create Impact at Any Company You Join'
 pubDate: 'Dec 20 2023'
-heroImage: '/blog-placeholder-3.jpg'
 ---
 
 Embarking on a journey with a new company offers a myriad of opportunities for growth and contribution. To ensure a meaningful impact, consider the following steps and strategies:
