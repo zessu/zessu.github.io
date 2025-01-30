@@ -34,7 +34,10 @@ const posts = (await getCollection('blog')).sort(
 				transition: 0.2s ease;
 			}
 			ul li a {
-				display: block;
+				display: flex;
+				flex-direction: column;
+				align-items:center;
+
 			}
 			.title {
 				margin: 0;
