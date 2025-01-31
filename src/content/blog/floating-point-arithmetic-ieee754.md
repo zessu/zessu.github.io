@@ -6,7 +6,7 @@ pubDate: 'Jan 31 2025'
 
 Why is the result of `0.1 + 0.2` `0.30000000000000004` instead of `0.3`?
 
-To understand this we need to cover some preliminaries first. Human beings tend to think in decimal, and its' obvious to us that 0.1 + 0.2 = 0.3. However, computers represent numbers in binary.
+To understand this we need to cover some preliminaries first. Human beings tend to think in decimal, and it's obvious to us that 0.1 + 0.2 = 0.3. However, computers represent numbers in binary.
 
 In any number system e.g *base 10, base 2*, fractions are represented as sums of powers of the base.
 In base 10, fractions are powers of 10 10 e.g 3/10 = 3*10^-1
@@ -29,7 +29,7 @@ To convert `0.1` to binary, we repeatedly multiply the fractional part by `2`
     8. `0.8 × 2 = 1.6` → integer part = `1`, fractional part = `0.6`
     9. And so on...
 
- This recursion has to be approximated because computers have limited memory and have to use a certain number of bits to represent integers or a floats e.g *64 bits*. Same way humans round 1/3(base 10) to something like 0.333.
+ This recursion has to be approximated because computers have limited memory and have to use a certain number of bits to represent integers or floats e.g *64 bits*. Same way humans round 1/3(base 10) to something like 0.333.
 
 0.1 in binary works out to about **00001100110011001100110011001100110011001100110011** but we know computers store numbers in memory as 0000 no decimal points, just a 0 or a 1 in the memory location. Assuming 8 bits, we would represent 1 & 2 as:
 
@@ -40,7 +40,7 @@ To convert `0.1` to binary, we repeatedly multiply the fractional part by `2`
 
 So how do we represent a number like 0.000001?
 
-There's a standard for how computers represent floating point numbers [IEEE 754]([IEEE754.PDF](https://people.eecs.berkeley.edu/~wkahan/ieee754status/IEEE754.PDF)).  This standard works by dividing floating numbers into three parts: **A sign bit, 11 exponent bits and 52 mantissa bits.**
+There's a standard for how computers represent floating point numbers [IEEE 754]([IEEE754.PDF](https://people.eecs.berkeley.edu/~wkahan/ieee754status/IEEE754.PDF)).  This standard works by dividing floating numbers into three parts: **A sign bit, 11 exponent bits and 52 mantissa bits** for a 64 bit computer.
 
 The sign bit represents whether the number is *+ve or -ve*, the exponent represents how many times we should move the decimal to the right side of the mantissa, the mantissa represents the floating point bit.
 
