@@ -9,8 +9,8 @@ Why is the result of `0.1 + 0.2` `0.30000000000000004` instead of `0.3`?
 To understand this we need to cover some preliminaries first. Human beings tend to think in decimal, and it's obvious to us that 0.1 + 0.2 = 0.3. However, computers represent numbers in binary.
 
 In any number system e.g *base 10, base 2*, fractions are represented as sums of powers of the base.
-In base 10, fractions are powers of 10 10 e.g 3/10 = 3*10^-1
-In base 2, fractions are sums powers of 2. e.g 1/2 = 1*2^-1
+In base 10, fractions are powers of 10 e.g 3/10 = 3 * 10^-1
+In base 2, fractions are sums powers of 2. e.g 1/2 = 1 * 2^-1
 
 Here's a general rule, **a fraction in any number system can be represented accurately if the denominator of the fraction has prime factors that are also [prime factors](https://byjus.com/maths/prime-factorization/) of the base.**
 
