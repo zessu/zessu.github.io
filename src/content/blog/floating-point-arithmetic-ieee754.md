@@ -1,7 +1,7 @@
 ---
 title: 'Floating point Arithmetic IEEE 754'
 description: 'Why 0.1 + 0.2 = 0.30000000000000004'
-pubDate: 'Jan 31 2024'
+pubDate: 'Jan 31 2025'
 ---
 
 Why is the result of `0.1 + 0.2` `0.30000000000000004` instead of `0.3`?
