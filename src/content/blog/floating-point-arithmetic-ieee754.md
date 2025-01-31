@@ -68,10 +68,10 @@ If you need to handle floating point arithmetic accurately use libraries like [D
 #### References
 
 ---
-[Floating Point Numbers - Computerphile](https://www.youtube.com/watch?v=PZRI1IfStY0)
-[IEEE-754 Floating Point Converter](https://www.h-schmidt.net/FloatConverter/IEEE754.html)
-[Prime Factorization - Definition, Methods, Examples, Prime Factorize](https://byjus.com/maths/prime-factorization/)
-[IEEE Standard 754 Floating Point Numbers - GeeksforGeeks](https://www.geeksforgeeks.org/ieee-standard-754-floating-point-numbers/)
-[IEEE754.PDF](https://people.eecs.berkeley.edu/~wkahan/ieee754status/IEEE754.PDF)
-[(3) Decimal Fraction to Binary Convert - YouTube](https://www.youtube.com/shorts/RBt2vtcPsC8)
+[Floating Point Numbers - Computerphile](https://www.youtube.com/watch?v=PZRI1IfStY0)<br />
+[IEEE-754 Floating Point Converter](https://www.h-schmidt.net/FloatConverter/IEEE754.html)<br />
+[Prime Factorization - Definition, Methods, Examples, Prime Factorize](https://byjus.com/maths/prime-factorization/)<br />
+[IEEE Standard 754 Floating Point Numbers - GeeksforGeeks](https://www.geeksforgeeks.org/ieee-standard-754-floating-point-numbers/)<br />
+[IEEE754.PDF](https://people.eecs.berkeley.edu/~wkahan/ieee754status/IEEE754.PDF)<br />
+[(3) Decimal Fraction to Binary Convert - YouTube](https://www.youtube.com/shorts/RBt2vtcPsC8)<br />
 [ieee 754 - Why do we bias the exponent of a floating-point number? - Stack Overflow](https://stackoverflow.com/questions/19864749/why-do-we-bias-the-exponent-of-a-floating-point-number)
