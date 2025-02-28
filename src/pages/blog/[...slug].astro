@@ -2,13 +2,13 @@
 import { type CollectionEntry, getCollection } from 'astro:content';
 import BlogPost from '../../layouts/BlogPost.astro';
 import { render } from 'astro:content';
-import { propsToFilename } from 'astro/assets/utils';
+import crypto from "crypto";
 
 export async function getStaticPaths() {
 	const posts = await getCollection('blog', ({data}) => { return import.meta.env.PROD ? data.draft !== true: true });
 	return posts.map((post) => ({
 		params: { slug: post.id },
-		props: post,
+		props: { ...post, hash: crypto.createHash("sha256").update(post.id).digest("hex") },
 	}));
 }
 type Props = CollectionEntry<'blog'>;
