@@ -7,4 +7,8 @@ import sitemap from "@astrojs/sitemap";
 export default defineConfig({
   site: "https://github.com/zessu/zessu.github.io",
   integrations: [mdx(), sitemap()],
+  prefetch: {
+    prefetchAll: true,
+    defaultStrategy: "load"
+  }
 });
