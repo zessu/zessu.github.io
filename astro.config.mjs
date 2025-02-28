@@ -9,6 +9,14 @@ export default defineConfig({
   integrations: [mdx(), sitemap()],
   prefetch: {
     prefetchAll: true,
-    defaultStrategy: "load"
-  }
+    defaultStrategy: "load",
+  },
+  markdown: {
+    shikiConfig: {
+      themes: {
+        light: "synthwave-84",
+        dark: "dracula",
+      },
+    },
+  },
 });
