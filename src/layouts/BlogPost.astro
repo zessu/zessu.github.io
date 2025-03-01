@@ -4,18 +4,14 @@ import BaseHead from '../components/BaseHead.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import FormattedDate from '../components/FormattedDate.astro';
-import { Post, db, eq } from "astro:db";
 
-const { title, description, pubDate, updatedDate, hash } = Astro.props;
-
-const postLikes = await db.select({likes: Post.likes}).from(Post).where(eq(Post.id, hash?? "")).execute();
-const postReads = await db.select({reads: Post.reads}).from(Post).where(eq(Post.id, hash?? "")).execute();
-
-const likes = postLikes[0]?.likes ? postLikes[0].likes : 0;
-const reads = postReads[0]?.reads ? postReads[0].reads : 0;
-
-type Props = CollectionEntry<'blog'>['data'];
-
+type Props = CollectionEntry<'blog'>['data'] & {
+  likes?: number;
+  reads?: number;
+};
+const { title, description, pubDate, updatedDate, likes, reads} = Astro.props;
+const safeLikes = likes ?? 0;
+const safeReads = reads ?? 0;
 ---
 
 <html lang="en">
@@ -62,10 +58,6 @@ type Props = CollectionEntry<'blog'>['data'];
   background-color: white;
 	padding: 5px;
   color: rgb(238, 0, 0);
-}
-
-#read-count{
-	gap: 5px;
 }
 
 .Btn:hover .leftContainer {
@@ -150,11 +142,10 @@ type Props = CollectionEntry<'blog'>['data'];
 									<span class="like">Like</span>
 								</span>
 								<span class="count" id="like-count">
-									{`${likes} likes`}
+									{`${safeLikes} likes`}
 								</span>
 								<span class="count" id="read-count">
-									<span>{reads}</span>
-									<span>Reads</span>
+									<span>{`${safeReads} reads`}</span>
 								</span>
 							</button>
 						</div>

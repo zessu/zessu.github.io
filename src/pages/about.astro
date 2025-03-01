@@ -1,11 +1,14 @@
 ---
 import Layout from '../layouts/BlogPost.astro';
+import { db, Post, eq } from "astro:db";
 ---
 
 <Layout
 	title="About Me"
 	description="about page"
 	pubDate={new Date()}
+	likes={0}
+	reads={0}
 >
 	<p>
 	JS/TypeScript enthusiast, full-stack developer. Into, system architecture, blockchain, cybersecurity, design.
