@@ -9,7 +9,7 @@ type Props = CollectionEntry<'blog'>['data'] & {
   likes?: number;
   reads?: number;
 };
-const { title, description, pubDate, updatedDate, likes, reads} = Astro.props;
+const { title, description, pubDate, updatedDate, likes, reads } = Astro.props;
 const safeLikes = likes ?? 0;
 const safeReads = reads ?? 0;
 ---
@@ -18,60 +18,60 @@ const safeReads = reads ?? 0;
 	<head>
 		<BaseHead title={title} description={description} />
 		<style>
-			/* From Uiverse.io by vinodjangid07 */ 
-.Btn {
-  height: 25px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  border: none;
-  border-radius: 5px;
-  overflow: hidden;
-  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.089);
-  cursor: pointer;
-  background-color: transparent;
-	padding: 0px;
-}
+			/* From Uiverse.io by vinodjangid07 */
+			.Btn {
+				height: 25px;
+				display: flex;
+				align-items: center;
+				justify-content: space-between;
+				border: none;
+				border-radius: 5px;
+				overflow: hidden;
+				box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.089);
+				cursor: pointer;
+				background-color: transparent;
+				padding: 0px;
+			}
 
-.leftContainer {
-  height: 100%;
-  background-color: rgb(238, 0, 0);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-	padding: 10px;
-	gap: 8px;
-}
+			.leftContainer {
+				height: 100%;
+				background-color: rgb(238, 0, 0);
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				padding: 10px;
+				gap: 8px;
+			}
 
-.leftContainer .like {
-  color: white;
-  font-weight: 600;
-}
+			.leftContainer .like {
+				color: white;
+				font-weight: 600;
+			}
 
-.count {
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: 600;
-  position: relative;
-  background-color: white;
-	padding: 5px;
-  color: rgb(238, 0, 0);
-}
+			.count {
+				height: 100%;
+				display: flex;
+				align-items: center;
+				justify-content: center;
+				font-weight: 600;
+				position: relative;
+				background-color: white;
+				padding: 5px;
+				color: rgb(238, 0, 0);
+			}
 
-.Btn:hover .leftContainer {
-  background-color: rgb(219, 0, 0);
-}
+			.Btn:hover .leftContainer {
+				background-color: rgb(219, 0, 0);
+			}
 
-.Btn:active .leftContainer {
-  background-color: rgb(201, 0, 0);
-}
+			.Btn:active .leftContainer {
+				background-color: rgb(201, 0, 0);
+			}
 
-.Btn:active .leftContainer svg {
-  transform: scale(1.15);
-  transform-origin: top;
-}
+			.Btn:active .leftContainer svg {
+				transform: scale(1.15);
+				transform-origin: top;
+			}
 
 			div#like-container {
 				display: flex;
@@ -84,14 +84,17 @@ const safeReads = reads ?? 0;
 				max-width: 100%;
 				margin: 0;
 			}
+
 			.hero-image {
 				width: 100%;
 			}
+
 			.hero-image img {
 				display: block;
 				border-radius: 12px;
 				box-shadow: var(--box-shadow);
 			}
+
 			.prose {
 				width: 720px;
 				max-width: calc(100% - 2em);
@@ -99,21 +102,39 @@ const safeReads = reads ?? 0;
 				padding: 1em;
 				color: rgb(var(--gray-dark));
 			}
+
 			.title {
 				margin-bottom: 1em;
 				padding: 1em 0;
 				text-align: center;
 				line-height: 1;
 			}
+
 			.title h1 {
 				margin: 0 0 0.5em 0;
 			}
+
 			.date {
 				margin-bottom: 0.5em;
 				color: rgb(var(--gray));
 			}
+
 			.last-updated-on {
 				font-style: italic;
+			}
+
+			/* ---------------------------------------------------------- */
+			/*                Snippflow Reading Progress Bar              */
+			/* ---------------------------------------------------------- */
+			#sf-reading-progress-bar {
+				position: fixed;
+				top: 0;
+				left: 0;
+				z-index: 9999;
+				width: 0%;
+				height: 5px;
+				background-color: #46a787;
+				margin: 0;
 			}
 		</style>
 	</head>
@@ -151,10 +172,26 @@ const safeReads = reads ?? 0;
 						</div>
 						<hr />
 					</div>
+					<div id="sf-reading-progress-bar"></div>
 					<slot />
 				</div>
 			</article>
 		</main>
 		<Footer />
+
+		<script>
+			document.addEventListener('DOMContentLoaded', () => {
+				const progressBar = document.getElementById('sf-reading-progress-bar');
+				if(progressBar) {
+				window.addEventListener('scroll', () => {
+					const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
+					const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+					const scrollPercentage = (scrollTop / scrollHeight) * 100;
+
+					progressBar.style.width = `${scrollPercentage}%`;
+				});
+				}
+			});
+		</script>
 	</body>
 </html>

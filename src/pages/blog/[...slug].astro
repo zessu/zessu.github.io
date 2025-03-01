@@ -9,6 +9,7 @@ export async function getStaticPaths() {
     const posts = await getCollection('blog', ({ data }) => {
         return import.meta.env.PROD ? data.draft !== true : true;
     });
+    // TODO: check if post exists, if not save in db with 0 like and 0 reads
     return await Promise.all(posts.map(async (post) => {
         const hash = crypto.createHash("sha256").update(post.id).digest("hex");
         const postLikes = await db.select({ likes: Post.likes }).from(Post).where(eq(Post.id, hash)).execute();
@@ -28,6 +29,6 @@ const post = Astro.props;
 const { Content } = await render(post);
 ---
 
-<BlogPost {...post.data } likes={post.likes} reads={post.reads}>
+<BlogPost { ...post.data } likes={post.likes} reads={post.reads}>
 	<Content />
 </BlogPost>
