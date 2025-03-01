@@ -9,7 +9,7 @@ export default async function () {
 
   const completedPosts = posts.map((post) => {
     const hash = crypto.createHash("sha256").update(post.id).digest("hex");
-    return { id: hash };
+    return { id: hash, likes: 0, reads: 0 };
   });
 
   await db.insert(Post).values(completedPosts).execute();

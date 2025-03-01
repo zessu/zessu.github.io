@@ -19,8 +19,8 @@ const Comment = defineTable({
 const Post = defineTable({
   columns: {
     id: column.text({ primaryKey: true }),
-    likes: column.number({ optional: true }),
-    reads: column.number({ optional: true }),
+    likes: column.number({ optional: false, default: 0 }),
+    reads: column.number({ optional: true, default: 0 }),
   },
 });
 
