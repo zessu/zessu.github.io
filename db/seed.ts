@@ -12,7 +12,5 @@ export default async function () {
     return { id: hash };
   });
 
-  console.log(completedPosts);
-
   await db.insert(Post).values(completedPosts).execute();
 }

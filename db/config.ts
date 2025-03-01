@@ -20,6 +20,7 @@ const Post = defineTable({
   columns: {
     id: column.text({ primaryKey: true }),
     likes: column.number({ optional: true }),
+    reads: column.number({ optional: true }),
   },
 });
 
