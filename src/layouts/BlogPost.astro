@@ -16,6 +16,7 @@ const safeReads = reads ?? 0;
 
 <html lang="en">
 	<head>
+		<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
 		<BaseHead title={title} description={description} />
 		<style>
 			/* From Uiverse.io by vinodjangid07 */
@@ -183,12 +184,21 @@ const safeReads = reads ?? 0;
 			document.addEventListener('DOMContentLoaded', () => {
 				const progressBar = document.getElementById('sf-reading-progress-bar');
 				if(progressBar) {
+				let confettiTriggered: boolean = false;
 				window.addEventListener('scroll', () => {
 					const scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
-					const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+					const footerHeight = document.querySelector('footer')?.clientHeight ?? 0;
+					const scrollHeight = document.documentElement.scrollHeight - (document.documentElement.clientHeight + footerHeight);
 					const scrollPercentage = (scrollTop / scrollHeight) * 100;
-
 					progressBar.style.width = `${scrollPercentage}%`;
+					if (scrollPercentage >= 96 && !confettiTriggered) {
+							confettiTriggered = true;
+							confetti({
+								particleCount: 200,
+								spread: 70,
+								origin: { y: 0.4 },
+							});
+						}
 				});
 				}
 			});
