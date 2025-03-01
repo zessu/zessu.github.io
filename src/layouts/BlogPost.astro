@@ -8,7 +8,11 @@ import { Post, db, eq } from "astro:db";
 
 const { title, description, pubDate, updatedDate, hash } = Astro.props;
 
-const res = await db.select({likes: Post.likes}).from(Post).where(eq(Post.id, hash?? "")).execute();
+const postLikes = await db.select({likes: Post.likes}).from(Post).where(eq(Post.id, hash?? "")).execute();
+const postReads = await db.select({reads: Post.reads}).from(Post).where(eq(Post.id, hash?? "")).execute();
+
+const likes = postLikes[0]?.likes ? postLikes[0].likes : 0;
+const reads = postReads[0]?.reads ? postReads[0].reads : 0;
 
 type Props = CollectionEntry<'blog'>['data'];
 
@@ -20,27 +24,27 @@ type Props = CollectionEntry<'blog'>['data'];
 		<style>
 			/* From Uiverse.io by vinodjangid07 */ 
 .Btn {
-  width: 140px;
   height: 25px;
   display: flex;
   align-items: center;
-  justify-content: flex-start;
+  justify-content: space-between;
   border: none;
   border-radius: 5px;
   overflow: hidden;
   box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.089);
   cursor: pointer;
   background-color: transparent;
+	padding: 0px;
 }
 
 .leftContainer {
-  width: 55%;
   height: 100%;
   background-color: rgb(238, 0, 0);
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+	padding: 10px;
+	gap: 8px;
 }
 
 .leftContainer .like {
@@ -48,26 +52,20 @@ type Props = CollectionEntry<'blog'>['data'];
   font-weight: 600;
 }
 
-.likeCount {
-  width: 45%;
+.count {
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: rgb(238, 0, 0);
   font-weight: 600;
   position: relative;
   background-color: white;
+	padding: 5px;
+  color: rgb(238, 0, 0);
 }
 
-.likeCount::before {
-  height: 8px;
-  width: 8px;
-  position: absolute;
-  content: "";
-  background-color: rgb(255, 255, 255);
-  transform: rotate(45deg);
-  left: -4px;
+#read-count{
+	gap: 5px;
 }
 
 .Btn:hover .leftContainer {
@@ -146,15 +144,19 @@ type Props = CollectionEntry<'blog'>['data'];
 						</div>
 						<h2>{title}</h2>
 						<div id="like-container">
-<button class="Btn">
-  <span class="leftContainer">
-    <svg fill="white" viewBox="0 0 512 512" height="1em" xmlns="http://www.w3.org/2000/svg"><path d="M47.6 300.4L228.3 469.1c7.5 7 17.4 10.9 27.7 10.9s20.2-3.9 27.7-10.9L464.4 300.4c30.4-28.3 47.6-68 47.6-109.5v-5.8c0-69.9-50.5-129.5-119.4-141C347 36.5 300.6 51.4 268 84L256 96 244 84c-32.6-32.6-79-47.5-124.6-39.9C50.5 55.6 0 115.2 0 185.1v5.8c0 41.5 17.2 81.2 47.6 109.5z"></path></svg>
-    <span class="like">Like</span>
-  </span>
-  <span class="likeCount">
-    {res[0]?.likes ? `${res[0].likes} likes` : "0 likes"}
-  </span>
-</button>
+							<button class="Btn">
+								<span class="leftContainer">
+									<svg fill="white" viewBox="0 0 512 512" height="1em" xmlns="http://www.w3.org/2000/svg"><path d="M47.6 300.4L228.3 469.1c7.5 7 17.4 10.9 27.7 10.9s20.2-3.9 27.7-10.9L464.4 300.4c30.4-28.3 47.6-68 47.6-109.5v-5.8c0-69.9-50.5-129.5-119.4-141C347 36.5 300.6 51.4 268 84L256 96 244 84c-32.6-32.6-79-47.5-124.6-39.9C50.5 55.6 0 115.2 0 185.1v5.8c0 41.5 17.2 81.2 47.6 109.5z"></path></svg>
+									<span class="like">Like</span>
+								</span>
+								<span class="count" id="like-count">
+									{`${likes} likes`}
+								</span>
+								<span class="count" id="read-count">
+									<span>{reads}</span>
+									<span>Reads</span>
+								</span>
+							</button>
 						</div>
 						<hr />
 					</div>
