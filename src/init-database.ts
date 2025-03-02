@@ -2,11 +2,7 @@ import { db, Post, eq } from "astro:db";
 import { getCollection } from "astro:content";
 import crypto from "crypto";
 
-function hashSlug(slug: string) {
-  return crypto.createHash("sha256").update(slug).digest("hex");
-}
-
-async function initializeArticles() {
+export async function initializeArticles() {
   try {
     console.log("Starting article database initialization...");
 
@@ -16,13 +12,11 @@ async function initializeArticles() {
     for (const blog of allBlogPosts) {
       const blogHash = hashSlug(blog.id);
 
-      // The select query returns an array, not a single item
       const existingBlog = await db
         .select()
         .from(Post)
         .where(eq(Post.id, blogHash));
 
-      // Check if the array is empty
       if (existingBlog.length === 0) {
         console.log(`Initializing new article: ${blog.data.title || blog.id}`);
 
@@ -39,11 +33,13 @@ async function initializeArticles() {
     }
 
     console.log("Article initialization complete!");
+    return true;
   } catch (error) {
     console.error("Error initializing articles:", error);
-    process.exit(1);
+    return false;
   }
 }
 
-// Run the initialization
-initializeArticles();
+function hashSlug(slug: string) {
+  return crypto.createHash("sha256").update(slug).digest("hex");
+}

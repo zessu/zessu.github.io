@@ -26,7 +26,7 @@ jobs:
         run: bun install
 
       - name: Initialize database with new articles
-        run: bun run scripts/init-database.js
+        run: bunx astro run scripts/init-db.ts
         env:
           ASTRO_DB_REMOTE_URL: ${{ secrets.ASTRO_DB_REMOTE_URL }}
           ASTRO_DB_APP_TOKEN: ${{ secrets.ASTRO_DB_APP_TOKEN }}
