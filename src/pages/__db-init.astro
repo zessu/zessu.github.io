@@ -4,7 +4,7 @@ import { db, Post, eq } from "astro:db";
 import { getCollection } from "astro:content";
 import crypto from "crypto";
 
-// This will run during the build process
+// This will run during the build process to seed our database
 if (import.meta.env.PROD) {
   try {
     console.log("Starting database initialization...");
@@ -42,14 +42,3 @@ if (import.meta.env.PROD) {
   }
 }
 ---
-
-<!-- This page won't actually be accessed - it just runs during build -->
-<html>
-  <head>
-    <title>DB Initialization</title>
-  </head>
-  <body>
-    <h1>Database Initialization</h1>
-    <p>This is a utility page that initializes the database during build.</p>
-  </body>
-</html>
