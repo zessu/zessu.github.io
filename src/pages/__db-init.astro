@@ -1,0 +1,55 @@
+---
+// src/pages/__db-init.astro
+import { db, Post, eq } from "astro:db";
+import { getCollection } from "astro:content";
+import crypto from "crypto";
+
+// This will run during the build process
+if (import.meta.env.PROD) {
+  try {
+    console.log("Starting database initialization...");
+
+    const allBlogPosts = await getCollection("blog");
+    console.log(`Found ${allBlogPosts.length} articles to process`);
+
+    for (const blog of allBlogPosts) {
+      const blogHash = crypto
+        .createHash("sha256")
+        .update(blog.id)
+        .digest("hex");
+
+      const existingBlog = await db
+        .select()
+        .from(Post)
+        .where(eq(Post.id, blogHash));
+
+      if (existingBlog.length === 0) {
+        console.log(`Initializing new article: ${blog.id}`);
+
+        await db.insert(Post).values({
+          id: blogHash,
+          likes: 0,
+          reads: 0,
+        });
+      } else {
+        console.log(`Article ${blog.id} already exists in the database`);
+      }
+    }
+
+    console.log("Database initialization complete!");
+  } catch (error) {
+    console.error(`Error initializing articles}`);
+  }
+}
+---
+
+<!-- This page won't actually be accessed - it just runs during build -->
+<html>
+  <head>
+    <title>DB Initialization</title>
+  </head>
+  <body>
+    <h1>Database Initialization</h1>
+    <p>This is a utility page that initializes the database during build.</p>
+  </body>
+</html>
