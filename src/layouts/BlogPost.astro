@@ -208,9 +208,9 @@ const safeReads = reads ?? 0;
             if (scrollPercentage >= 96 && !confettiTriggered) {
               confettiTriggered = true;
               confetti({
-                particleCount: 200,
+                particleCount: 100,
                 spread: 70,
-                origin: { y: 0.4 },
+                origin: { y: 0.5 },
               });
             }
           });
