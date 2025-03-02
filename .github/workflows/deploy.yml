@@ -19,8 +19,8 @@ jobs:
       - name: Install, build, and upload your site output
         uses: withastro/action@v3
         env:
-          TURSO_DB_URL: ${{ secrets.ASTRO_DB_REMOTE_URL }}
-          TURSO_AUTH_TOKEN: ${{ secrets.ASTRO_DB_APP_TOKEN }}
+          ASTRO_DB_REMOTE_URL: ${{ secrets.ASTRO_DB_REMOTE_URL }}
+          ASTRO_DB_APP_TOKEN: ${{ secrets.ASTRO_DB_APP_TOKEN }}
 
   deploy:
     needs: build
