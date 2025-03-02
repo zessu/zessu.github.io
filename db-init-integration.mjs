@@ -1,6 +1,3 @@
-// db-init-integration.mjs
-import crypto from "crypto";
-
 export default function createIntegration() {
   return {
     name: "db-init-integration",
