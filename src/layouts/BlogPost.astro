@@ -218,6 +218,13 @@ const { title, description, pubDate, updatedDate, likes, reads, hash } =
           hash,
         });
       });
+
+      setTimeout(async () => {
+        const { data, error } = await actions.updatePostVisits({
+          hash,
+        });
+      }, 1000 * 60);
+
       document.addEventListener("DOMContentLoaded", () => {
         console.log("DOM content loaded");
         const progressBar = document.getElementById("sf-reading-progress-bar");
