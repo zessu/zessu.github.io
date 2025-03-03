@@ -6,12 +6,12 @@ import Footer from "../components/Footer.astro";
 import FormattedDate from "../components/FormattedDate.astro";
 
 type Props = CollectionEntry<"blog">["data"] & {
-  likes?: number;
-  reads?: number;
+  hash: string;
+  likes: number;
+  reads: number;
 };
-const { title, description, pubDate, updatedDate, likes, reads } = Astro.props;
-const safeLikes = likes ?? 0;
-const safeReads = reads ?? 0;
+const { title, description, pubDate, updatedDate, likes, reads, hash } =
+  Astro.props;
 ---
 
 <html lang="en">
@@ -160,7 +160,7 @@ const safeReads = reads ?? 0;
             </div>
             <h2>{title}</h2>
             <div id="like-container">
-              <button class="Btn">
+              <button class="Btn" id="increaseCount">
                 <span class="leftContainer">
                   <svg
                     fill="white"
@@ -174,10 +174,10 @@ const safeReads = reads ?? 0;
                   <span class="like">Like</span>
                 </span>
                 <span class="count" id="like-count">
-                  {`${safeLikes} likes`}
+                  {`${likes} likes`}
                 </span>
                 <span class="count" id="read-count">
-                  <span>{`${safeReads} reads`}</span>
+                  <span>{`${reads} reads`}</span>
                 </span>
               </button>
             </div>
@@ -188,13 +188,42 @@ const safeReads = reads ?? 0;
         </div>
       </article>
     </main>
+    <div
+      id="data-container"
+      data-likes={likes}
+      data-reads={reads}
+      data-hash={hash}
+    >
+    </div>
     <Footer />
 
     <script>
+      import { actions } from "astro:actions";
+      const dataContainer = document.getElementById("data-container");
+      const articleLikes = dataContainer?.dataset.likes;
+      const articleReads = dataContainer?.dataset.reads;
+      const articleHash = dataContainer?.dataset.hash;
+
+      const likes = articleLikes ? Number(articleLikes) : 0;
+      const reads = articleReads ? Number(articleReads) : 0;
+      const hash = articleHash ? articleHash : "";
+
+      const increaseCountButton = document.querySelector(
+        "button#increaseCount"
+      );
+
+      increaseCountButton?.addEventListener("click", async () => {
+        console.log("increase count button clicked");
+        const { data, error } = await actions.likePost({
+          count: likes,
+          hash,
+        });
+      });
       document.addEventListener("DOMContentLoaded", () => {
+        console.log("DOM content loaded");
         const progressBar = document.getElementById("sf-reading-progress-bar");
         if (progressBar) {
-          let confettiTriggered: boolean = false;
+          let confettiTriggered = false;
           window.addEventListener("scroll", () => {
             const scrollTop =
               document.documentElement.scrollTop || document.body.scrollTop;

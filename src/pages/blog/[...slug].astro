@@ -1,34 +1,49 @@
 ---
-import { type CollectionEntry, getCollection } from 'astro:content';
-import BlogPost from '../../layouts/BlogPost.astro';
+import { type CollectionEntry, getCollection } from "astro:content";
+import BlogPost from "../../layouts/BlogPost.astro";
 import { db, Post, eq } from "astro:db";
-import { render } from 'astro:content';
+import { render } from "astro:content";
 import crypto from "crypto";
 
 export async function getStaticPaths() {
-    const posts = await getCollection('blog', ({ data }) => {
-        return import.meta.env.PROD ? data.draft !== true : true;
-    });
-    // TODO: check if post exists, if not save in db with 0 like and 0 reads
-    return await Promise.all(posts.map(async (post) => {
-        const hash = crypto.createHash("sha256").update(post.id).digest("hex");
-        const postLikes = await db.select({ likes: Post.likes }).from(Post).where(eq(Post.id, hash)).execute();
-        const postReads = await db.select({ reads: Post.reads }).from(Post).where(eq(Post.id, hash)).execute();
-        return {
-            params: { slug: post.id },
-            props: { ...post, hash, likes: postLikes[0]?.likes ?? 0 , reads: postReads[0]?.reads ?? 0 }
-        };
-    }));
+  const posts = await getCollection("blog", ({ data }) => {
+    return import.meta.env.PROD ? data.draft !== true : true;
+  });
+  return await Promise.all(
+    posts.map(async (post) => {
+      const hash = crypto.createHash("sha256").update(post.id).digest("hex");
+      const postLikes = await db
+        .select({ likes: Post.likes })
+        .from(Post)
+        .where(eq(Post.id, hash))
+        .execute();
+      const postReads = await db
+        .select({ reads: Post.reads })
+        .from(Post)
+        .where(eq(Post.id, hash))
+        .execute();
+      return {
+        params: { slug: post.id },
+        props: {
+          ...post,
+          hash,
+          likes: postLikes[0]?.likes ?? 0,
+          reads: postReads[0]?.reads ?? 0,
+        },
+      };
+    })
+  );
 }
 
-type Props = CollectionEntry<'blog'> & {
-  likes?: number;
-  reads?: number;
+type Props = CollectionEntry<"blog"> & {
+  likes: number;
+  reads: number;
+  hash: string;
 };
 const post = Astro.props;
 const { Content } = await render(post);
 ---
 
-<BlogPost { ...post.data } likes={post.likes} reads={post.reads}>
-	<Content />
+<BlogPost {...post.data} likes={post.likes} reads={post.reads} hash={post.hash}>
+  <Content />
 </BlogPost>
