@@ -213,7 +213,6 @@ const { title, description, pubDate, updatedDate, likes, reads, hash } =
       );
 
       increaseCountButton?.addEventListener("click", async () => {
-        console.log("increase count button clicked");
         const { data, error } = await actions.likePost({
           count: likes,
           hash,
