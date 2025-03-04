@@ -21,7 +21,7 @@ export const server = {
 
         await db
           .update(Post)
-          .set({ likes: count + 1 })
+          .set({ likes: existingPost[0].likes + 1 })
           .where(eq(Post.id, hash))
           .execute();
       } catch (error) {
