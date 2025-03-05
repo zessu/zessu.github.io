@@ -10,7 +10,7 @@ export const server = {
     }),
     handler: async (input) => {
       try {
-        const { count, hash } = input;
+        const { hash } = input;
         const existingPost = await db
           .select()
           .from(Post)
