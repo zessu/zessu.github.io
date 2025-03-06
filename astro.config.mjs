@@ -8,7 +8,7 @@ import vercel from "@astrojs/vercel";
 
 // https://astro.build/config
 export default defineConfig({
-  site: "https://github.com/zessu/zessu.github.io",
+  site: "https://drew.is-a.dev",
   integrations: [mdx(), sitemap(), db(), seedData()],
 
   prefetch: {
