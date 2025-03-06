@@ -1,17 +1,21 @@
 ---
-import Layout from '../layouts/BlogPost.astro';
+import Layout from "../layouts/BlogPost.astro";
+import BaseHead from "../components/BaseHead.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
 import { db, Post, eq } from "astro:db";
 ---
 
-<Layout
-	title="About Me"
-	description="about page"
-	pubDate={new Date()}
-	likes={0}
-	reads={0}
->
-	<p>
-	JS/TypeScript enthusiast, full-stack developer. Into, system architecture, blockchain, cybersecurity, design.
-I love cooking, I love art. I probably spend more time behind my computer programming than I should. My music taste is diverse but I mostly listen to Electronic music (DnB, Dubstep). I am also a music producer
-	</p>
-</Layout>
+<html lang="en">
+  <head>
+    <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+  </head>
+  <body>
+    <Header />
+    <main>
+      <p></p>
+    </main>
+    <Footer />
+  </body>
+</html>

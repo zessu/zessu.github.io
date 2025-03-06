@@ -1,31 +1,40 @@
 ---
-import BaseHead from '../components/BaseHead.astro';
-import Header from '../components/Header.astro';
-import Footer from '../components/Footer.astro';
-import { SITE_TITLE, SITE_DESCRIPTION } from '../consts';
+import BaseHead from "../components/BaseHead.astro";
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
 ---
 
 <!doctype html>
 <html lang="en">
-	<head>
-		<BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
-	</head>
-	<body>
-		<Header />
-		<main>
-			<h3>Hi There! I am Andrew 👋</h3>
-			<p>
-				Welcome to my blog. I will update this on a continuous basis. I am a software developer
-				and a music producer. I love working with typescript, react, bun, graphql, aws cdk, toying with and designing infrastructure.
-				<br />I work both on the frontend and backend and I am conversant with React Native for designing mobile applications.
-				<br /><br />
-				I also work with blockchains, specializing in solidity mostly within the ethereum ecosystem.
-				In my free time I like to write music, do some learning, go try out new food and restaurants, go to the beach and generally have a good time
-				<br /><br />
-				📮 Contact me via my 
-				<a href="mailto:spew-santa-railway@duck.com" aria-label="Email spew-santa-railway@duck.com">Private Email Address</a>
-			</p>
-		</main>
-		<Footer />
-	</body>
+  <head>
+    <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
+  </head>
+  <body>
+    <Header />
+    <main>
+      <h3>Hi There!👋</h3>
+      <p>
+        I'm Drew, a Javascript/TypeScript enthusiast, full-stack developer. I am
+        into system architecture, blockchain development and cybersecurity. I
+        work with typescript, react, bun, graphql, postgres, aws cdk, solidity &
+        Zig. I am super passionate about the Javascript ecosystem, from
+        frontend, backend, react native, web3, electron and everything in btn.
+        Anything Javascript
+        <br /><br />
+        My music taste is diverse but I mostly listen to Electronic music, a lot
+        of Drum&Bass, Dubstep. In my free time I like to write music, learn, try
+        out new foods/restaurants, cook, hang out with some friends, go to the beach
+        and generally have a good time
+        <br /><br />
+        📮 Contact me via my
+        <a
+          href="mailto:spew-santa-railway@duck.com"
+          aria-label="Email spew-santa-railway@duck.com"
+          >Private Email Address</a
+        >
+      </p>
+    </main>
+    <Footer />
+  </body>
 </html>
