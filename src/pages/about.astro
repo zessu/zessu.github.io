@@ -1,7 +1,16 @@
 ---
+import { Image } from "astro:assets";
 import BaseHead from "../components/BaseHead.astro";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
+import boatsWithFriends from "../memories/webp-boatnfriends.webp";
+import burgers from "../memories/webp-burgers.webp";
+import malindiWater from "../memories/webp-malindiwater.webp";
+import marina from "../memories/webp-marina.webp";
+import restaurantSeaSide from "../memories/webp-restaurant.webp";
+import saltySquid from "../memories/webp-saltysquid.webp";
+import seafood from "../memories/webp-seafood.webp";
+import seaworld from "../memories/webp-seaworld.webp";
 import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
 ---
 
@@ -12,7 +21,23 @@ import { SITE_TITLE, SITE_DESCRIPTION } from "../consts";
   <body>
     <Header />
     <main>
-      <p></p>
+      <Image
+        src={boatsWithFriends}
+        alt="hanging out with some friends on a boat"
+      />
+      <Image src={burgers} alt="one hell of a burger" />
+      <Image src={malindiWater} alt="fishing at a river delta" />
+      <Image src={marina} alt="boats at a marina" />
+      <Image
+        src={restaurantSeaSide}
+        alt="bar and restaurant next to a marina"
+      />
+      <Image
+        src={saltySquid}
+        alt="seated at the salty squid enjoying some food and a nice breeze"
+      />
+      <Image src={seafood} alt="A delicious seafood platter" />
+      <Image src={seaworld} alt="Hanging out at sea world after work" />
     </main>
     <Footer />
   </body>
