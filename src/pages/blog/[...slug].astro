@@ -9,16 +9,17 @@ export async function getStaticPaths() {
   const posts = await getCollection("blog", ({ data }) => {
     return import.meta.env.PROD ? data.draft !== true : true;
   });
+
   return await Promise.all(
     posts.map(async (post) => {
       const hash = crypto.createHash("sha256").update(post.id).digest("hex");
       const postLikes = await db
-        .select({ likes: Post.likes })
+        .select()
         .from(Post)
         .where(eq(Post.id, hash))
         .execute();
       const postReads = await db
-        .select({ reads: Post.reads })
+        .select()
         .from(Post)
         .where(eq(Post.id, hash))
         .execute();
@@ -27,8 +28,8 @@ export async function getStaticPaths() {
         props: {
           ...post,
           hash,
-          likes: postLikes[0]?.likes ?? 0,
-          reads: postReads[0]?.reads ?? 0,
+          likes: postLikes[0].likes,
+          reads: postReads[0].reads,
         },
       };
     })

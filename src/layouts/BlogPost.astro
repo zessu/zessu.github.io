@@ -202,7 +202,6 @@ const { title, description, pubDate, updatedDate, likes, reads, hash } =
       import { actions } from "astro:actions";
       const dataContainer = document.getElementById("data-container");
       const articleLikes = dataContainer?.dataset.likes;
-      const articleReads = dataContainer?.dataset.reads;
       const articleHash = dataContainer?.dataset.hash;
 
       const likes = articleLikes ? Number(articleLikes) : 0;
