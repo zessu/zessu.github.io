@@ -160,8 +160,8 @@ const { title, description, pubDate, updatedDate, likes, reads, hash } =
             </div>
             <h2>{title}</h2>
             <div id="like-container">
-              <button class="Btn" id="increaseCount">
-                <span class="leftContainer">
+              <button class="Btn">
+                <span class="leftContainer" id="increaseCount">
                   <svg
                     fill="white"
                     viewBox="0 0 512 512"
@@ -177,17 +177,18 @@ const { title, description, pubDate, updatedDate, likes, reads, hash } =
                   {`${likes} likes`}
                 </span>
                 <span class="count" id="read-count">
-                  <span>{`${reads} reads`}</span>
+                  {`${reads} reads`}
                 </span>
               </button>
             </div>
-            <hr />
           </div>
-          <div id="sf-reading-progress-bar"></div>
-          <slot />
+          <hr />
         </div>
+        <div id="sf-reading-progress-bar"></div>
+        <slot />
       </article>
     </main>
+
     <div
       id="data-container"
       data-likes={likes}
@@ -208,22 +209,26 @@ const { title, description, pubDate, updatedDate, likes, reads, hash } =
       const reads = articleReads ? Number(articleReads) : 0;
       const hash = articleHash ? articleHash : "";
 
-      const increaseCountButton = document.querySelector(
-        "button#increaseCount"
-      );
+      const increaseCountButton = document.querySelector("span#increaseCount");
+
+      const likeCountContainer = document.getElementById("like-count");
+      const readCountContainer = document.getElementById("read-count");
 
       increaseCountButton?.addEventListener("click", async () => {
         const { data, error } = await actions.likePost({
-          count: likes,
           hash,
         });
+
+        if (data && likeCountContainer) {
+          likeCountContainer.innerHTML = `${likes + 1} likes`;
+        }
       });
 
       setTimeout(async () => {
         const { data, error } = await actions.updatePostVisits({
           hash,
         });
-      }, 1000 * 60);
+      }, 1000 * 20);
 
       document.addEventListener("DOMContentLoaded", () => {
         console.log("DOM content loaded");
