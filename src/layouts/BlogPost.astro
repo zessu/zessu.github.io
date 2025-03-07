@@ -183,9 +183,9 @@ const { title, description, pubDate, updatedDate, likes, reads, hash } =
             </div>
           </div>
           <hr />
+          <div id="sf-reading-progress-bar"></div>
+          <slot />
         </div>
-        <div id="sf-reading-progress-bar"></div>
-        <slot />
       </article>
     </main>
 
@@ -206,13 +206,11 @@ const { title, description, pubDate, updatedDate, likes, reads, hash } =
       const articleHash = dataContainer?.dataset.hash;
 
       const likes = articleLikes ? Number(articleLikes) : 0;
-      const reads = articleReads ? Number(articleReads) : 0;
       const hash = articleHash ? articleHash : "";
 
       const increaseCountButton = document.querySelector("span#increaseCount");
 
       const likeCountContainer = document.getElementById("like-count");
-      const readCountContainer = document.getElementById("read-count");
 
       increaseCountButton?.addEventListener("click", async () => {
         const { data, error } = await actions.likePost({
