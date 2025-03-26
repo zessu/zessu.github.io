@@ -19,7 +19,7 @@ Before the Gutenberg printing press books had to be transcribed by hand. Yes, te
 
 <div id="blackletter" style="display: flex; align-items: flex-start;">
   <div id="blackletter-image" style="flex: 1; margin-right: 20px; margin-top: 100px">
-    <img src="/src/images/typography/blackletter.jpg" alt="BlackLetter Typeface" style="max-width: 100%; height: auto;">
+    <img src="/images/typography/blackletter.jpg" alt="BlackLetter Typeface" style="max-width: 100%; height: auto;">
   </div>
   <div style="flex: 2">
     <p>When Gutenberg made the printing press, he used <strong>BlackLetter</strong>, the same typeface that was used by monks to transcribe text. <strong>BlackLetter</strong> was hard to read, not only in writing but in any print material as you can see form the sample text. The need for better legibility started a revolution to discover the best font for print/modern material. And just like European art, the font space started its own revolution mostly driven by rebels and creative types. And just like that, newer typefaces were invented</p>
@@ -31,47 +31,47 @@ Serif typefaces have accents/decorative lines/flourishes on them called serifs. 
 
 <div style="display: flex">
   <div>
-    <img src="/src/images/typography/Serif vs sans serif fonts.jpg" style="width: 400px">
+    <img src="/images/typography/Serif vs sans serif fonts.jpg" style="width: 400px">
   </div>
-  <img src="/src/images/typography/times new roman.jpg" style="height:400px" />
+  <img src="/images/typography/times new roman.jpg" style="height:400px" />
 </div>
 
 **Sans-Serifs** <br />
 Sans means without in french, so san serifs means without serifs
 They are versatile, as they lack a distinctive personality. Sans Serif fonts have a lot of variability in terms of their font styling. You can change size, boldness, italisize them, change amount of boldness and how thick the font appears.
-<img src="/src/images/typography/Gill_Sans_specimen_sheet.jpg" style="height:400px"/>
+<img src="/images/typography/Gill_Sans_specimen_sheet.jpg" style="height:400px"/>
 
 They are usually also very legible. You can use one type face for your entire brand ie you can use the thick & bold (both adjustable) variant for your headings and thinner lighter (both adjustable) variant for paragraphs. They are the default choice for **90%** of consumer products and are used in logos, ads, license plates, key caps, billboards, packaging and company logos. e.g _Google, Spotify, Microsoft, Facebook, Chanel_.
 
 They were invented to remove decorations from type faces. They feel more modern, because contemporary design removes a lot of ostentation, fancy decorations. As evident in the evolution of the apple logo.
 
-<img src="/src/images/typography/old vs new logos.png"/>
+<img src="/images/typography/old vs new logos.png"/>
 
 **Slab Serifs** <br />
 Slab serifs are just as bold as Serif fonts with a twist on the serif ornamentation. The serifs have strong bold and modern aesthetic, ostentations meant to draw attention. These will commonly be used in headers and logos.
-<img src="/src/images/typography/slab serif.jpg" width="500px"/>
+<img src="/images/typography/slab serif.jpg" width="500px"/>
 
 **Display typefaces** <br />
 Display fontfaces can be serif or even San-serifs. They are mostly meant for single lines of text and are usually applied in logos or landing pages. Think _chick-fil-A_ or _Tesla_. They don't make good paragraphs but are designed for single lines of text. These are often stylistic and unique and gained popularity during the advertising age.
 
 <div class="image-container" style="display: flex; gap: 30px; flex-wrap: wrap;">
-  <img src="/src/images/typography/display typeface.jpg" width="300px" />
-  <img src="/src/images/typography/Chick-fil-A-Logo-2012-present.png" width="300px" />
+  <img src="/images/typography/display typeface.jpg" width="300px" />
+  <img src="/images/typography/Chick-fil-A-Logo-2012-present.png" width="300px" />
 </div>
 <br />
 
 **Script typefaces** <br />
 Script typefaces are meant to look like old school calligraphy, inspired by handwriting from the 17th century. Based on the flow of cursive handwriting, they are great for headers, titles and any types of display text. They are often used on wedding invitations and diplomas.
-<img src="/src/images/typography/letterscript.png" width="600px"/>
+<img src="/images/typography/letterscript.png" width="600px"/>
 
 **Pixelated Typefaces**
-<img src="/src/images/typography/doom pixalated font.png" width="600px"/> <br />
+<img src="/images/typography/doom pixalated font.png" width="600px"/> <br />
 Also known as bitmap fonts originated in the 1980s with the rise of computer graphics and video games.
 
 **Monospace Typefaces** <br />
 Monospace fonts occupy the same horizontal space, unlike proportional fonts like Helvetica where the "I"s might have different spacing from the "W"s. <br />
 Some Monospace typefonts like **Courier** mimic old typewrites. Monospace typefaces work great in well structred environments where things like aligment matter e.g code editors.
-<img src="/src/images/typography/monospace fonts.png" width="600px"/>
+<img src="/images/typography/monospace fonts.png" width="600px"/>
 
 ### Beyond typefaces - Font Design
 
@@ -92,7 +92,7 @@ _REM_. Stands for root EM. Sets size relative to the root font size. You can set
 **Font Spacing** <br />
 Good font spacing is important for accessibility particularly with people with visual impairments.
 
-<img src="/src/images/typography/typediagram.png" width="600px"/> <br />
+<img src="/images/typography/typediagram.png" width="600px"/> <br />
 **Baseline** - Invisible line upon which your font rests. e.g school line papers.<br />
 **Cap line** - A cap line determines how high up fonts can go, or their limit vertically.
 **X-height** - This is a line that constrains the height of the lowercase letters.<br />
@@ -107,18 +107,18 @@ I researched some designers and will leave you with some designs from **James Re
 
 <div style="display: flex; flex-direction: column; gap: 10px;">
   <!-- First Image -->
-  <img src="/src/images/typography/feminist women poster.webp" style="width: 100%;" />
+  <img src="/images/typography/feminist women poster.webp" style="width: 100%;" />
 
   <!-- Middle Images -->
   <div style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;">
-    <img src="/src/images/typography/jamie reid queen.webp" style="flex: 1 1 auto; max-width: 350px;" />
-    <img src="/src/images/typography/jamie reid.jpg" style="flex: 1 1 auto; max-width: 350px;" />
-    <img src="/src/images/typography/rodchenko-2.jpg" style="flex: 1 1 auto; max-width: 500px;" />
-    <img src="/src/images/typography/stepanova varvara.jpg" style="flex: 1 1 auto; max-width: 350px;" />
+    <img src="/images/typography/jamie reid queen.webp" style="flex: 1 1 auto; max-width: 350px;" />
+    <img src="/images/typography/jamie reid.jpg" style="flex: 1 1 auto; max-width: 350px;" />
+    <img src="/images/typography/rodchenko-2.jpg" style="flex: 1 1 auto; max-width: 500px;" />
+    <img src="/images/typography/stepanova varvara.jpg" style="flex: 1 1 auto; max-width: 350px;" />
   </div>
 
   <!-- Last Image -->
-  <img src="/src/images/typography/we can do it poster.jpg" style="width: 100%;" />
+  <img src="/images/typography/we can do it poster.jpg" style="width: 100%;" />
 </div> <br />
 
 #### References & Resources
