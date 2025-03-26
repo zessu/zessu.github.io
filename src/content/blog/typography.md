@@ -18,7 +18,7 @@ Good typography grabs attention, builds hierarchy and brand recognition. Without
 Before the Gutenberg printing press books had to be transcribed by hand. Yes, text, usually religious text, had to be transcribed by monks, by hand, a long and tedious process. You had innovation in other civilizations e.g the Chinese that allowed them to print letters on clay and more innovation in other parts of the world but the printing press was the first time paper and print really came together, and of course, that that's the format we still use today for any physical text material.
 
 <div id="blackletter" style="display: flex; align-items: flex-start;">
-  <div style="flex: 1; margin-right: 20px; margin-top: 100px">
+  <div id="blackletter-image" style="flex: 1; margin-right: 20px; margin-top: 100px">
     <img src="/src/images/typography/blackletter.jpg" alt="BlackLetter Typeface" style="max-width: 100%; height: auto;">
   </div>
   <div style="flex: 2">
@@ -101,7 +101,9 @@ Should be inversely proportional to size of the font. The larger the font the sm
 **Letter Spacing/Tracking** - The space between each letter. Should also be inversely proportional to the size of the font. Bigger fonts are easier to read thus more legible with less letter spacing compared to smaller fonts which can be harder to distinguish so need more spacing.<br />
 **Kerning** - Kerning is the reduction of increasing of space between individual letters.<br />
 
-So there you go, there's a lot more about typography that you need to consider beyond typefaces, fonts, font sizes, kerning, line height and so on e.g color contrast, hierarchy, responsive typography for the web but I thought this was a nice introduction to the basics of typography. I researched some designers and will leave you with some designs from James Reid, Alexander Rodchenko and Varvara Stepanova and others that highlight how important typography can be for thought provoking messaging e.g protest posters and I hope you get some nostalgia or inspiration looking at these as well.
+So there you go, there's a lot more about typography that you need to consider beyond typefaces, fonts, font sizes, kerning, line height e.g color contrast, hierarchy, responsive typography for the web e.t.c but I think this is a nice introduction to the basics of typography.
+
+I researched some designers and will leave you with some designs from **James Reid, Alexander Rodchenko, Varvara Stepanova and others** that highlight how important typography can be for thought provoking messaging e.g protest posters and I hope you get some nostalgia or inspiration looking at these as well.
 
 <div style="display: flex; flex-direction: column; gap: 10px;">
   <!-- First Image -->
@@ -111,7 +113,7 @@ So there you go, there's a lot more about typography that you need to consider b
   <div style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;">
     <img src="/src/images/typography/jamie reid queen.webp" style="flex: 1 1 auto; max-width: 350px;" />
     <img src="/src/images/typography/jamie reid.jpg" style="flex: 1 1 auto; max-width: 350px;" />
-    <img src="/src/images/typography/rodchenko-2.jpg" style="flex: 1 1 auto; max-width: 350px;" />
+    <img src="/src/images/typography/rodchenko-2.jpg" style="flex: 1 1 auto; max-width: 500px;" />
     <img src="/src/images/typography/stepanova varvara.jpg" style="flex: 1 1 auto; max-width: 350px;" />
   </div>
 
@@ -119,7 +121,7 @@ So there you go, there's a lot more about typography that you need to consider b
   <img src="/src/images/typography/we can do it poster.jpg" style="width: 100%;" />
 </div> <br />
 
-#### Reference & Resources
+#### References & Resources
 
 [Design Spo Youtube](https://www.youtube.com/@DesignSpo) <br />
 https://fonts.google.com/ <br />
@@ -141,6 +143,10 @@ https://type.method.ac/
     div#blackletter {
       flex-direction: column;
       gap: 10px;
+    }
+
+    div#blackletter-image {
+      margin-top: 0px !important;
     }
   }
   <style>
