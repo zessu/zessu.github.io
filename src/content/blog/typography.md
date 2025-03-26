@@ -103,7 +103,21 @@ Should be inversely proportional to size of the font. The larger the font the sm
 
 So there you go, there's a lot more about typography that you need to consider beyond typefaces, fonts, font sizes, kerning, line height and so on e.g color contrast, hierarchy, responsive typography for the web but I thought this was a nice introduction to the basics of typography. I researched some designers and will leave you with some designs from James Reid, Alexander Rodchenko and Varvara Stepanova and others that highlight how important typography can be for thought provoking messaging e.g protest posters and I hope you get some nostalgia or inspiration looking at these as well.
 
----
+<div style="display: flex; flex-direction: column; gap: 10px;">
+  <!-- First Image -->
+  <img src="/src/images/typography/feminist women poster.webp" style="width: 100%;" />
+
+  <!-- Middle Images -->
+  <div style="display: flex; flex-wrap: wrap; gap: 10px; justify-content: center;">
+    <img src="/src/images/typography/jamie reid queen.webp" style="flex: 1 1 auto; max-width: 350px;" />
+    <img src="/src/images/typography/jamie reid.jpg" style="flex: 1 1 auto; max-width: 350px;" />
+    <img src="/src/images/typography/rodchenko-2.jpg" style="flex: 1 1 auto; max-width: 350px;" />
+    <img src="/src/images/typography/stepanova varvara.jpg" style="flex: 1 1 auto; max-width: 350px;" />
+  </div>
+
+  <!-- Last Image -->
+  <img src="/src/images/typography/we can do it poster.jpg" style="width: 100%;" />
+</div> <br />
 
 #### Reference & Resources
 
