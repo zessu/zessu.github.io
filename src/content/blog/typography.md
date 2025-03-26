@@ -54,10 +54,11 @@ Slab serifs are just as bold as Serif fonts with a twist on the serif ornamentat
 **Display typefaces** <br />
 Display fontfaces can be serif or even San-serifs. They are mostly meant for single lines of text and are usually applied in logos or landing pages. Think _chick-fil-A_ or _Tesla_. They don't make good paragraphs but are designed for single lines of text. These are often stylistic and unique and gained popularity during the advertising age.
 
-<div style="display: flex; gap:30px; margin-top: -30px;">
-<img src="/src/images/typography/display typeface.jpg" width="300px"/>
-<img src="/src/images/typography/Chick-fil-A-Logo-2012-present.png" width="300px"/>
-</div> <br />
+<div class="image-container" style="display: flex; gap: 30px; flex-wrap: wrap;">
+  <img src="/src/images/typography/display typeface.jpg" width="300px" />
+  <img src="/src/images/typography/Chick-fil-A-Logo-2012-present.png" width="300px" />
+</div>
+<br />
 
 **Script typefaces** <br />
 Script typefaces are meant to look like old school calligraphy, inspired by handwriting from the 17th century. Based on the flow of cursive handwriting, they are great for headers, titles and any types of display text. They are often used on wedding invitations and diplomas.
@@ -140,6 +141,26 @@ https://type.method.ac/
     div#blackletter {
       flex-direction: column;
       gap: 10px;
+    }
+  }
+  <style>
+  /* Default styles for the specific container */
+  .image-container {
+    display: flex;
+    gap: 30px;
+    flex-wrap: wrap; /* Ensures items wrap if they exceed the container width */
+  }
+
+  /* Styles for mobile devices */
+  @media (max-width: 768px) {
+    .image-container {
+      flex-direction: column; /* Stack items vertically */
+      align-items: center; /* Center items horizontally */
+    }
+
+    .image-container img {
+      width: 100%; /* Make images responsive and take full width */
+      max-width: 300px; /* Limit maximum width for better scaling */
     }
   }
 </style>
