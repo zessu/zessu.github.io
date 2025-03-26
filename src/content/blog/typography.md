@@ -2,7 +2,6 @@
 title: "A little about Typography"
 description: "Typography"
 pubDate: "Mar 26 2025"
-draft: true
 ---
 
 I've found myself recently drawn to certain typefaces, particularly Helvetica. There's some reassurance, boldness, comfort and trust I feel when I look at this font. I am not sure why, maybe some childhood poster nostalgia, maybe it's something else. But I've always felt drawn and "targeted" by some certain design choices, and typography is one of them. So I decided to do a little research so I can familiarize myself a bit with typography and these are my notes.
