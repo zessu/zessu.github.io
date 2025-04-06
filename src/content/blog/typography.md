@@ -148,25 +148,21 @@ https://type.method.ac/
     div#blackletter-image {
       margin-top: 0px !important;
     }
-  }
-  <style>
-  /* Default styles for the specific container */
-  .image-container {
-    display: flex;
-    gap: 30px;
-    flex-wrap: wrap; /* Ensures items wrap if they exceed the container width */
-  }
 
-  /* Styles for mobile devices */
-  @media (max-width: 768px) {
     .image-container {
-      flex-direction: column; /* Stack items vertically */
-      align-items: center; /* Center items horizontally */
+      flex-direction: column;
+      align-items: center;
     }
 
     .image-container img {
-      width: 100%; /* Make images responsive and take full width */
-      max-width: 300px; /* Limit maximum width for better scaling */
+      width: 100%;
+      max-width: 300px;
     }
+  }
+
+  .image-container {
+    display: flex;
+    gap: 30px;
+    flex-wrap: wrap;
   }
 </style>
