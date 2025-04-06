@@ -1,6 +1,6 @@
 ---
-title: "How to Create Impact at Any Company You Join"
-description: "How to Create Impact at Any Company You Join"
+title: "How to Create Impact at Any Company"
+description: "How to Create Impact at Any Company"
 pubDate: "Dec 20 2023"
 ---
 
