@@ -1,4 +1,4 @@
-import { h as AstroJSX, i as renderJSX, j as createVNode, k as AstroUserError } from './chunks/astro/server_My-EQ2pT.mjs';
+import { g as AstroJSX, h as renderJSX, i as createVNode, j as AstroUserError } from './chunks/astro/server_XkzkhHpx.mjs';
 import 'kleur/colors';
 import 'clsx';
 

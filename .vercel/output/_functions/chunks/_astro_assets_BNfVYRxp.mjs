@@ -1,5 +1,5 @@
 import { i as isRemotePath, j as joinPaths } from './path_DQHtp1ua.mjs';
-import { A as AstroError, af as ExpectedImage, ag as LocalImageUsedWrongly, ah as MissingImageDimension, ai as UnsupportedImageFormat, aj as IncompatibleDescriptorOptions, ak as UnsupportedImageConversion, al as toStyleString, am as NoImageMetadata, an as FailedToFetchRemoteImageDimensions, ao as ExpectedImageOptions, ap as ExpectedNotESMImage, aq as InvalidImageService, c as createAstro, a as createComponent, ar as ImageMissingAlt, r as renderTemplate, m as maybeRenderHead, b as addAttribute, s as spreadAttributes } from './astro/server_My-EQ2pT.mjs';
+import { A as AstroError, af as ExpectedImage, ag as LocalImageUsedWrongly, ah as MissingImageDimension, ai as UnsupportedImageFormat, aj as IncompatibleDescriptorOptions, ak as UnsupportedImageConversion, al as toStyleString, am as NoImageMetadata, an as FailedToFetchRemoteImageDimensions, ao as ExpectedImageOptions, ap as ExpectedNotESMImage, aq as InvalidImageService, k as createAstro, c as createComponent, ar as ImageMissingAlt, r as renderTemplate, p as maybeRenderHead, f as addAttribute, s as spreadAttributes } from './astro/server_XkzkhHpx.mjs';
 import { D as DEFAULT_HASH_PROPS, a as VALID_SUPPORTED_FORMATS, b as DEFAULT_OUTPUT_FORMAT } from './consts_CJVA2lEV.mjs';
 import * as mime from 'mrmime';
 import 'clsx';
@@ -1236,7 +1236,7 @@ async function getConfiguredImageService() {
   if (!globalThis?.astroAsset?.imageService) {
     const { default: service } = await import(
       // @ts-expect-error
-      './sharp_BvDBfCpp.mjs'
+      './sharp_DE-LQDDX.mjs'
     ).catch((e) => {
       const error = new AstroError(InvalidImageService);
       error.cause = e;
@@ -1488,7 +1488,6 @@ const imageConfig = {"endpoint":{"route":"/_image"},"service":{"entrypoint":"ast
 
 const _astro_assets = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
   __proto__: null,
-  Image: $$Image,
   getConfiguredImageService,
   getImage,
   imageConfig,
@@ -1496,4 +1495,4 @@ const _astro_assets = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.definePrope
   isLocalService
 }, Symbol.toStringTag, { value: 'Module' }));
 
-export { $$Image as $, _astro_assets as _, isRemoteAllowed as a, baseService as b, getConfiguredImageService as g, imageConfig as i, parseQuality as p };
+export { _astro_assets as _, isRemoteAllowed as a, baseService as b, getConfiguredImageService as g, imageConfig as i, parseQuality as p };

@@ -3,7 +3,7 @@ import pLimit from 'p-limit';
 import { z, ZodIssueCode } from 'zod';
 import { a as removeBase, i as isRemotePath, p as prependForwardSlash } from './path_DQHtp1ua.mjs';
 import { V as VALID_INPUT_FORMATS } from './consts_CJVA2lEV.mjs';
-import { A as AstroError, q as RenderUndefinedEntryError, a as createComponent, r as renderTemplate, u as unescapeHTML, U as UnknownContentCollectionError, t as renderUniqueStylesheet, v as renderScriptElement, w as createHeadAndContent, f as renderComponent } from './astro/server_My-EQ2pT.mjs';
+import { A as AstroError, q as RenderUndefinedEntryError, c as createComponent, r as renderTemplate, u as unescapeHTML, U as UnknownContentCollectionError, t as renderUniqueStylesheet, v as renderScriptElement, w as createHeadAndContent, d as renderComponent } from './astro/server_XkzkhHpx.mjs';
 import 'kleur/colors';
 import * as devalue from 'devalue';
 
@@ -65,7 +65,7 @@ class ImmutableDataStore {
    */
   static async fromModule() {
     try {
-      const data = await import('./_astro_data-layer-content_DBdH05wM.mjs');
+      const data = await import('./_astro_data-layer-content_Dhk7DkPc.mjs');
       if (data.default instanceof Map) {
         return ImmutableDataStore.fromMap(data.default);
       }
@@ -212,7 +212,7 @@ const CONTENT_LAYER_IMAGE_REGEX = /__ASTRO_IMAGE_="([^"]+)"/g;
 async function updateImageReferencesInBody(html, fileName) {
   const { default: imageAssetMap } = await import('./content-assets_DleWbedO.mjs');
   const imageObjects = /* @__PURE__ */ new Map();
-  const { getImage } = await import('./_astro_assets_FLvuJj9V.mjs').then(n => n._);
+  const { getImage } = await import('./_astro_assets_BNfVYRxp.mjs').then(n => n._);
   for (const [_full, imagePath] of html.matchAll(CONTENT_LAYER_IMAGE_REGEX)) {
     try {
       const decodedImagePath = JSON.parse(imagePath.replaceAll("&#x22;", '"'));
