@@ -6,6 +6,8 @@ import db from "@astrojs/db";
 import seedData from "./db-init-integration.mjs";
 import vercel from "@astrojs/vercel";
 
+import tailwindcss from "@tailwindcss/vite";
+
 // https://astro.build/config
 export default defineConfig({
   site: "https://drew.is-a.dev",
@@ -26,4 +28,8 @@ export default defineConfig({
   },
 
   adapter: vercel(),
+
+  vite: {
+    plugins: [tailwindcss()],
+  },
 });

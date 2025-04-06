@@ -26,31 +26,38 @@ const posts = (await getCollection("blog")).sort(
         cybersecurity. I work with typescript, react, bun, graphql, postgres,
         serverless, kubernetes, solidity & Go. In my free time I like to write
         music, learn, try out new foods/restaurants, cook, hang out with
-        friends, go to the beach and generally have a good time
-        <br /><br />
+        friends, go to the beach and generally have a good time.
+        <br />
+      </p>
+      <section>
+        <div class="mb-4">🗒️ Blog</div>
+        <ul>
+          {
+            posts.map((post) => (
+              <div class="flex flex-row">
+                <li>
+                  🗒️{" "}
+                  <a href={`/blog/${post.id}/`}>
+                    <span class="title">{post.data.title}</span>
+                  </a>
+                </li>
+                <span class="date ml-2">
+                  -<FormattedDate date={post.data.pubDate} />
+                </span>
+              </div>
+            ))
+          }
+        </ul>
+      </section>
+
+      <div class="mt-4">
         📮 Contact me via my
         <a
           href="mailto:spew-santa-railway@duck.com"
           aria-label="Email spew-santa-railway@duck.com"
           >Private Email Address</a
         >
-      </p>
-      <section>
-        <ul>
-          {
-            posts.map((post) => (
-              <li>
-                <a href={`/blog/${post.id}/`}>
-                  <span class="title">{post.data.title}</span>
-                  <span class="date">
-                    <FormattedDate date={post.data.pubDate} />
-                  </span>
-                </a>
-              </li>
-            ))
-          }
-        </ul>
-      </section>
+      </div>
     </main>
     <Footer />
   </body>
