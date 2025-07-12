@@ -8,12 +8,10 @@ export default async function () {
       return import.meta.env.PROD ? data.draft !== true : true;
     });
 
-    console.log(">>>>>>>>>>>>>>>>>");
     const completedPosts = posts.map((post) => {
       console.log(post.id);
       const hash = crypto.createHash("sha256").update(post.id).digest("hex");
       console.log(hash);
-      console.log(">>>>>>>>>>>>>>>>>");
       return { id: hash, likes: 0, reads: 0 };
     });
 
