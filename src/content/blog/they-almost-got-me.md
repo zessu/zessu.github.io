@@ -1,7 +1,7 @@
 ---
 title: "They almost got me"
 description: "Malware analysis"
-pubDate: "July 12 2025"
+pubDate: "July 15 2025"
 ---
 
 <br />
