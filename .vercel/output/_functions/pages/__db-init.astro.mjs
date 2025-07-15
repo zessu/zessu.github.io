@@ -2,7 +2,7 @@ import { c as createComponent, r as renderTemplate } from '../chunks/astro/serve
 import 'kleur/colors';
 import 'clsx';
 import { d as db, P as Post } from '../chunks/_astro_db_Dj1Q2wxM.mjs';
-import { g as getCollection } from '../chunks/_astro_content_HIPAvVEl.mjs';
+import { g as getCollection } from '../chunks/_astro_content_CnsQ9PSy.mjs';
 import crypto from 'crypto';
 import { eq } from '@astrojs/db/dist/runtime/virtual.js';
 export { renderers } from '../renderers.mjs';
@@ -13,20 +13,31 @@ const $$DbInit = createComponent(async ($$result, $$props, $$slots) => {
       console.log("Starting database initialization...");
       const allBlogPosts = await getCollection("blog");
       console.log(`Found ${allBlogPosts.length} articles to process`);
-      for (const blog of allBlogPosts) {
-        const blogHash = crypto.createHash("sha256").update(blog.id).digest("hex");
-        const existingBlog = await db.select().from(Post).where(eq(Post.id, blogHash));
-        if (existingBlog.length === 0) {
-          console.log(`Initializing new article: ${blog.id}`);
-          await db.insert(Post).values({
-            id: blogHash,
-            likes: 0,
-            reads: 0
-          });
-        } else {
-          console.log(`Article ${blog.id} already exists in the database`);
-        }
-      }
+      const allBlogHashes = allBlogPosts.map((blogPost) => {
+        return crypto.createHash("sha256").update(blogPost.id).digest("hex");
+      });
+      const allBlogHashesResultPromises = allBlogHashes.map(async (blogHash) => {
+        return await db.select().from(Post).where(eq(Post.id, blogHash));
+      });
+      const blogsWithExistingHashesPromise = await Promise.all(
+        allBlogHashesResultPromises
+      );
+      const blogsIdsWithExistingHashes = blogsWithExistingHashesPromise.flat().map((post) => {
+        return post.id;
+      });
+      const newBlogPosts = allBlogPosts.filter((blogPost) => {
+        const blogHash = crypto.createHash("sha256").update(blogPost.id).digest("hex");
+        return !blogsIdsWithExistingHashes.includes(blogHash);
+      });
+      const newBlogPostsPromises = newBlogPosts.map(async (blogPost) => {
+        const blogHash = crypto.createHash("sha256").update(blogPost.id).digest("hex");
+        return db.insert(Post).values({
+          id: blogHash,
+          likes: 0,
+          reads: 0
+        });
+      });
+      await Promise.all(newBlogPostsPromises);
       console.log("Database initialization complete!");
     } catch (error) {
       console.error(`Error initializing articles}`);
