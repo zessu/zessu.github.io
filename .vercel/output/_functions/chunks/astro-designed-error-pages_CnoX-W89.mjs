@@ -1,31 +1,56 @@
-import { stringify, parse } from 'devalue';
-import { R as REDIRECT_STATUS_CODES, A as AstroError, o as ActionsReturnedInvalidDataError, D as DEFAULT_404_COMPONENT } from './astro/server_XkzkhHpx.mjs';
+import { parse, stringify } from 'devalue';
+import { A as AstroError, ae as ActionCalledFromServerError, af as REDIRECT_STATUS_CODES, ag as ActionsReturnedInvalidDataError, D as DEFAULT_404_COMPONENT } from './astro/server_D0lsQEZO.mjs';
+import { b as appendForwardSlash$1 } from './path_Bl04Vi8h.mjs';
 import { escape } from 'html-escaper';
 
 const ACTION_QUERY_PARAMS$1 = {
-  actionName: "_action",
-  actionPayload: "_astroActionPayload"
-};
+  actionName: "_action"};
 const ACTION_RPC_ROUTE_PATTERN = "/_actions/[...path]";
 
 const __vite_import_meta_env__ = {"ASSETS_PREFIX": undefined, "BASE_URL": "/", "DEV": false, "MODE": "production", "PROD": true, "SITE": "https://drew.is-a.dev", "SSR": true};
 const ACTION_QUERY_PARAMS = ACTION_QUERY_PARAMS$1;
+const appendForwardSlash = appendForwardSlash$1;
 const codeToStatusMap = {
-  // Implemented from tRPC error code table
-  // https://trpc.io/docs/server/error-handling#error-codes
+  // Implemented from IANA HTTP Status Code Registry
+  // https://www.iana.org/assignments/http-status-codes/http-status-codes.xhtml
   BAD_REQUEST: 400,
   UNAUTHORIZED: 401,
+  PAYMENT_REQUIRED: 402,
   FORBIDDEN: 403,
   NOT_FOUND: 404,
-  TIMEOUT: 405,
+  METHOD_NOT_ALLOWED: 405,
+  NOT_ACCEPTABLE: 406,
+  PROXY_AUTHENTICATION_REQUIRED: 407,
+  REQUEST_TIMEOUT: 408,
   CONFLICT: 409,
+  GONE: 410,
+  LENGTH_REQUIRED: 411,
   PRECONDITION_FAILED: 412,
-  PAYLOAD_TOO_LARGE: 413,
+  CONTENT_TOO_LARGE: 413,
+  URI_TOO_LONG: 414,
   UNSUPPORTED_MEDIA_TYPE: 415,
+  RANGE_NOT_SATISFIABLE: 416,
+  EXPECTATION_FAILED: 417,
+  MISDIRECTED_REQUEST: 421,
   UNPROCESSABLE_CONTENT: 422,
+  LOCKED: 423,
+  FAILED_DEPENDENCY: 424,
+  TOO_EARLY: 425,
+  UPGRADE_REQUIRED: 426,
+  PRECONDITION_REQUIRED: 428,
   TOO_MANY_REQUESTS: 429,
-  CLIENT_CLOSED_REQUEST: 499,
-  INTERNAL_SERVER_ERROR: 500
+  REQUEST_HEADER_FIELDS_TOO_LARGE: 431,
+  UNAVAILABLE_FOR_LEGAL_REASONS: 451,
+  INTERNAL_SERVER_ERROR: 500,
+  NOT_IMPLEMENTED: 501,
+  BAD_GATEWAY: 502,
+  SERVICE_UNAVAILABLE: 503,
+  GATEWAY_TIMEOUT: 504,
+  HTTP_VERSION_NOT_SUPPORTED: 505,
+  VARIANT_ALSO_NEGOTIATES: 506,
+  INSUFFICIENT_STORAGE: 507,
+  LOOP_DETECTED: 508,
+  NETWORK_AUTHENTICATION_REQUIRED: 511
 };
 const statusToCodeMap = Object.entries(codeToStatusMap).reduce(
   // reverse the key-value pairs
@@ -97,10 +122,10 @@ async function callSafely(handler) {
     return { data, error: void 0 };
   } catch (e) {
     if (e instanceof ActionError) {
-      return { data: undefined, error: e };
+      return { data: void 0, error: e };
     }
     return {
-      data: undefined,
+      data: void 0,
       error: new ActionError({
         message: e instanceof Error ? e.message : "Unknown error",
         code: "INTERNAL_SERVER_ERROR"
@@ -137,7 +162,7 @@ function serializeActionResult(res) {
       body: JSON.stringify(body2)
     };
   }
-  if (res.data === undefined) {
+  if (res.data === void 0) {
     return {
       type: "empty",
       status: 204
@@ -174,7 +199,7 @@ function deserializeActionResult(res) {
       json = JSON.parse(res.body);
     } catch {
       return {
-        data: undefined,
+        data: void 0,
         error: new ActionError({
           message: res.body,
           code: "INTERNAL_SERVER_ERROR"
@@ -182,24 +207,24 @@ function deserializeActionResult(res) {
       };
     }
     if (Object.assign(__vite_import_meta_env__, { _: process.env._ })?.PROD) {
-      return { error: ActionError.fromJson(json), data: undefined };
+      return { error: ActionError.fromJson(json), data: void 0 };
     } else {
       const error = ActionError.fromJson(json);
       error.stack = actionResultErrorStack.get();
       return {
         error,
-        data: undefined
+        data: void 0
       };
     }
   }
   if (res.type === "empty") {
-    return { data: undefined, error: undefined };
+    return { data: void 0, error: void 0 };
   }
   return {
     data: parse(res.body, {
       URL: (href) => new URL(href)
     }),
-    error: undefined
+    error: void 0
   };
 }
 const actionResultErrorStack = /* @__PURE__ */ function actionResultErrorStackFn() {
@@ -213,6 +238,9 @@ const actionResultErrorStack = /* @__PURE__ */ function actionResultErrorStackFn
     }
   };
 }();
+function astroCalledServerError() {
+  return new AstroError(ActionCalledFromServerError);
+}
 
 function template({
   title,
@@ -317,7 +345,7 @@ const DEFAULT_404_ROUTE = {
   component: DEFAULT_404_COMPONENT,
   generate: () => "",
   params: [],
-  pattern: /\/404/,
+  pattern: /^\/404\/?$/,
   prerender: false,
   pathname: "/404",
   segments: [[{ content: "404", dynamic: false, spread: false }]],
@@ -349,4 +377,4 @@ const default404Instance = {
   default: default404Page
 };
 
-export { ActionError as A, DEFAULT_404_ROUTE as D, ACTION_RPC_ROUTE_PATTERN as a, ACTION_QUERY_PARAMS as b, callSafely as c, deserializeActionResult as d, ActionInputError as e, default404Instance as f, getActionQueryString as g, ensure404Route as h, serializeActionResult as s };
+export { ActionError as A, DEFAULT_404_ROUTE as D, astroCalledServerError as a, ACTION_QUERY_PARAMS as b, appendForwardSlash as c, deserializeActionResult as d, default404Instance as e, ensure404Route as f, getActionQueryString as g, callSafely as h, ActionInputError as i, ACTION_RPC_ROUTE_PATTERN as j, serializeActionResult as s };

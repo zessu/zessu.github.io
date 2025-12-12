@@ -1,10 +1,11 @@
+import { escape } from 'html-escaper';
 import { Traverse } from 'neotraverse/modern';
 import pLimit from 'p-limit';
-import { z, ZodIssueCode } from 'zod';
-import { a as removeBase, i as isRemotePath, p as prependForwardSlash } from './path_DQHtp1ua.mjs';
-import { V as VALID_INPUT_FORMATS } from './consts_CJVA2lEV.mjs';
-import { A as AstroError, q as RenderUndefinedEntryError, c as createComponent, r as renderTemplate, u as unescapeHTML, U as UnknownContentCollectionError, t as renderUniqueStylesheet, v as renderScriptElement, w as createHeadAndContent, d as renderComponent } from './astro/server_XkzkhHpx.mjs';
-import 'kleur/colors';
+import { z } from 'zod';
+import { r as removeBase, i as isRemotePath, p as prependForwardSlash } from './path_Bl04Vi8h.mjs';
+import { V as VALID_INPUT_FORMATS } from './consts_BmVDRGlB.mjs';
+import { A as AstroError, U as UnknownContentCollectionError, c as createComponent, R as RenderUndefinedEntryError, u as unescapeHTML, r as renderTemplate, h as renderUniqueStylesheet, i as renderScriptElement, j as createHeadAndContent, d as renderComponent } from './astro/server_D0lsQEZO.mjs';
+import 'piccolore';
 import * as devalue from 'devalue';
 
 const CONTENT_IMAGE_FLAG = "astroContentImageFlag";
@@ -65,7 +66,7 @@ class ImmutableDataStore {
    */
   static async fromModule() {
     try {
-      const data = await import('./_astro_data-layer-content_DBFixQU5.mjs');
+      const data = await import('./_astro_data-layer-content_BYfv0W01.mjs');
       if (data.default instanceof Map) {
         return ImmutableDataStore.fromMap(data.default);
       }
@@ -82,7 +83,7 @@ class ImmutableDataStore {
   }
 }
 function dataStoreSingleton() {
-  let instance = undefined;
+  let instance = void 0;
   return {
     get: async () => {
       if (!instance) {
@@ -113,13 +114,24 @@ function createCollectionToGlobResultMap({
   }
   return collectionToGlobResultMap;
 }
+z.object({
+  tags: z.array(z.string()).optional(),
+  lastModified: z.date().optional()
+});
 function createGetCollection({
   contentCollectionToEntryMap,
   dataCollectionToEntryMap,
   getRenderEntryImport,
-  cacheEntriesByCollection
+  cacheEntriesByCollection,
+  liveCollections
 }) {
   return async function getCollection(collection, filter) {
+    if (collection in liveCollections) {
+      throw new AstroError({
+        ...UnknownContentCollectionError,
+        message: `Collection "${collection}" is a live collection. Use getLiveCollection() instead of getCollection().`
+      });
+    }
     const hasFilter = typeof filter === "function";
     const store = await globalDataStore.get();
     let type;
@@ -212,7 +224,7 @@ const CONTENT_LAYER_IMAGE_REGEX = /__ASTRO_IMAGE_="([^"]+)"/g;
 async function updateImageReferencesInBody(html, fileName) {
   const { default: imageAssetMap } = await import('./content-assets_DleWbedO.mjs');
   const imageObjects = /* @__PURE__ */ new Map();
-  const { getImage } = await import('./_astro_assets_BNfVYRxp.mjs').then(n => n._);
+  const { getImage } = await import('./_astro_assets_CdUmre6v.mjs').then(n => n._);
   for (const [_full, imagePath] of html.matchAll(CONTENT_LAYER_IMAGE_REGEX)) {
     try {
       const decodedImagePath = JSON.parse(imagePath.replaceAll("&#x22;", '"'));
@@ -241,8 +253,10 @@ async function updateImageReferencesInBody(html, fileName) {
     return Object.entries({
       ...attributes,
       src: image.src,
-      srcset: image.srcSet.attribute
-    }).map(([key, value]) => value ? `${key}=${JSON.stringify(String(value))}` : "").join(" ");
+      srcset: image.srcSet.attribute,
+      // This attribute is used by the toolbar audit
+      ...Object.assign(__vite_import_meta_env__, { _: process.env._ }).DEV ? { "data-image-component": "true" } : {}
+    }).map(([key, value]) => value ? `${key}="${escape(value)}"` : "").join(" ");
   });
 }
 function updateImageReferencesInData(data, fileName, imageAssetMap) {
@@ -366,68 +380,13 @@ async function render({
     throw UnexpectedRenderError;
   }
 }
-function createReference({ lookupMap }) {
-  let store = null;
-  globalDataStore.get().then((s) => store = s);
-  return function reference(collection) {
-    return z.union([
-      z.string(),
-      z.object({
-        id: z.string(),
-        collection: z.string()
-      }),
-      z.object({
-        slug: z.string(),
-        collection: z.string()
-      })
-    ]).transform(
-      (lookup, ctx) => {
-        if (!store) {
-          ctx.addIssue({
-            code: ZodIssueCode.custom,
-            message: `**${ctx.path.join(".")}:** Reference to ${collection} could not be resolved: store not available.
-This is an Astro bug, so please file an issue at https://github.com/withastro/astro/issues.`
-          });
-          return;
-        }
-        const flattenedErrorPath = ctx.path.join(".");
-        if (typeof lookup === "object") {
-          if (lookup.collection !== collection) {
-            ctx.addIssue({
-              code: ZodIssueCode.custom,
-              message: `**${flattenedErrorPath}**: Reference to ${collection} invalid. Expected ${collection}. Received ${lookup.collection}.`
-            });
-            return;
-          }
-          return lookup;
-        }
-        if (!lookupMap[collection]) {
-          return { id: lookup, collection };
-        }
-        const { type, entries } = lookupMap[collection];
-        const entry = entries[lookup];
-        if (!entry) {
-          ctx.addIssue({
-            code: ZodIssueCode.custom,
-            message: `**${flattenedErrorPath}**: Reference to ${collection} invalid. Expected ${Object.keys(
-              entries
-            ).map((c) => JSON.stringify(c)).join(" | ")}. Received ${JSON.stringify(lookup)}.`
-          });
-          return;
-        }
-        if (type === "content") {
-          return { slug: lookup, collection };
-        }
-        return { id: lookup, collection };
-      }
-    );
-  };
-}
 function isPropagatedAssetsModule(module) {
   return typeof module === "object" && module != null && "__astroPropagation" in module;
 }
 
 // astro-head-inject
+
+const liveCollections = {};
 
 const contentDir = '/src/content/';
 
@@ -473,8 +432,7 @@ const getCollection = createGetCollection({
 	dataCollectionToEntryMap,
 	getRenderEntryImport: createGlobLookup(collectionToRenderEntryMap),
 	cacheEntriesByCollection,
+	liveCollections,
 });
-
-createReference({ lookupMap });
 
 export { getCollection as g, renderEntry as r };

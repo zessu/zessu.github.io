@@ -1,5 +1,6 @@
-import { g as getConfiguredImageService, i as imageConfig, a as isRemoteAllowed } from '../chunks/_astro_assets_BNfVYRxp.mjs';
-import { i as isRemotePath } from '../chunks/path_DQHtp1ua.mjs';
+import { g as getConfiguredImageService, i as imageConfig } from '../chunks/_astro_assets_CdUmre6v.mjs';
+import { i as isRemotePath } from '../chunks/path_Bl04Vi8h.mjs';
+import { i as isRemoteAllowed } from '../chunks/index_CZWCDbwp.mjs';
 import * as mime from 'mrmime';
 export { renderers } from '../renderers.mjs';
 
@@ -39,7 +40,7 @@ async function loadRemoteImage(src, headers) {
     }
     return await res.arrayBuffer();
   } catch {
-    return undefined;
+    return void 0;
   }
 }
 const GET = async ({ request }) => {
@@ -55,8 +56,11 @@ const GET = async ({ request }) => {
     }
     let inputBuffer = void 0;
     const isRemoteImage = isRemotePath(transform.src);
-    const sourceUrl = isRemoteImage ? new URL(transform.src) : new URL(transform.src, url.origin);
     if (isRemoteImage && isRemoteAllowed(transform.src, imageConfig) === false) {
+      return new Response("Forbidden", { status: 403 });
+    }
+    const sourceUrl = new URL(transform.src, url.origin);
+    if (!isRemoteImage && sourceUrl.origin !== url.origin) {
       return new Response("Forbidden", { status: 403 });
     }
     inputBuffer = await loadRemoteImage(sourceUrl, isRemoteImage ? new Headers() : request.headers);

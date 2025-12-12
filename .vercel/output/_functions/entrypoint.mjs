@@ -1,19 +1,21 @@
-import { g as getActionQueryString } from './astro-designed-error-pages_5Ze7Py6X.mjs';
+import { g as getActionQueryString, a as astroCalledServerError, A as ActionError, d as deserializeActionResult, b as ACTION_QUERY_PARAMS, c as appendForwardSlash } from './chunks/astro-designed-error-pages_CnoX-W89.mjs';
+import 'piccolore';
 import 'es-module-lexer';
-import 'kleur/colors';
-import './astro/server_XkzkhHpx.mjs';
+import './chunks/astro/server_D0lsQEZO.mjs';
 import 'clsx';
-import 'cookie';
-import { d as db, P as Post } from './_astro_db_Dj1Q2wxM.mjs';
+import { d as db, P as Post } from './chunks/_astro_db_BW3zQ1fH.mjs';
 import * as z from 'zod';
-import { d as defineAction } from './server_CEyUtdql.mjs';
+import { d as defineAction } from './chunks/server_Ch6U-04c.mjs';
 import { eq } from '@astrojs/db/dist/runtime/virtual.js';
 
+const internalFetchHeaders = {};
+
+const apiContextRoutesSymbol = Symbol.for("context.routes");
 const ENCODED_DOT = "%2E";
 function toActionProxy(actionCallback = {}, aggregatedPath = "") {
   return new Proxy(actionCallback, {
     get(target, objKey) {
-      if (objKey in target || typeof objKey === "symbol") {
+      if (target.hasOwnProperty(objKey) || typeof objKey === "symbol") {
         return target[objKey];
       }
       const path = aggregatedPath + encodeURIComponent(objKey.toString()).replaceAll(".", ENCODED_DOT);
@@ -23,6 +25,9 @@ function toActionProxy(actionCallback = {}, aggregatedPath = "") {
       Object.assign(action, {
         queryString: getActionQueryString(path),
         toString: () => action.queryString,
+        // redefine prototype methods as the object's own property, not the prototype's
+        bind: action.bind,
+        valueOf: () => action.valueOf,
         // Progressive enhancement info for React.
         $$FORM_ACTION: function() {
           const searchParams = new URLSearchParams(action.toString());
@@ -48,13 +53,70 @@ function toActionProxy(actionCallback = {}, aggregatedPath = "") {
     }
   });
 }
-async function handleAction(param, path, context) {
+function _getActionPath(toString) {
+  let path = `${"/".replace(/\/$/, "")}/_actions/${new URLSearchParams(toString()).get(ACTION_QUERY_PARAMS.actionName)}`;
   {
-    const { getAction } = await import('./server_CEyUtdql.mjs').then(n => n.a);
-    const action = await getAction(path);
+    path = appendForwardSlash(path);
+  }
+  return path;
+}
+async function handleAction(param, path, context) {
+  if (context) {
+    const pipeline = Reflect.get(context, apiContextRoutesSymbol);
+    if (!pipeline) {
+      throw astroCalledServerError();
+    }
+    const action = await pipeline.getAction(path);
     if (!action) throw new Error(`Action not found: ${path}`);
     return action.bind(context)(param);
   }
+  const headers = new Headers();
+  headers.set("Accept", "application/json");
+  for (const [key, value] of Object.entries(internalFetchHeaders)) {
+    headers.set(key, value);
+  }
+  let body = param;
+  if (!(body instanceof FormData)) {
+    try {
+      body = JSON.stringify(param);
+    } catch (e) {
+      throw new ActionError({
+        code: "BAD_REQUEST",
+        message: `Failed to serialize request body to JSON. Full error: ${e.message}`
+      });
+    }
+    if (body) {
+      headers.set("Content-Type", "application/json");
+    } else {
+      headers.set("Content-Length", "0");
+    }
+  }
+  const rawResult = await fetch(
+    _getActionPath(() => getActionQueryString(path)),
+    {
+      method: "POST",
+      body,
+      headers
+    }
+  );
+  if (rawResult.status === 204) {
+    return deserializeActionResult({ type: "empty", status: 204 });
+  }
+  const bodyText = await rawResult.text();
+  if (rawResult.ok) {
+    return deserializeActionResult({
+      type: "data",
+      body: bodyText,
+      status: 200,
+      contentType: "application/json+devalue"
+    });
+  }
+  return deserializeActionResult({
+    type: "error",
+    body: bodyText,
+    status: rawResult.status,
+    contentType: "application/json"
+  });
 }
 toActionProxy();
 

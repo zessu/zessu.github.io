@@ -1,16 +1,17 @@
-import { x as ROUTE_TYPE_HEADER, y as REROUTE_DIRECTIVE_HEADER, D as DEFAULT_404_COMPONENT, z as clientAddressSymbol, A as AstroError, L as LocalsNotAnObject, B as REROUTABLE_STATUS_CODES, C as responseSentSymbol } from './astro/server_XkzkhHpx.mjs';
-import { bold, red, yellow, dim, blue } from 'kleur/colors';
+import { q as ROUTE_TYPE_HEADER, t as REROUTE_DIRECTIVE_HEADER, D as DEFAULT_404_COMPONENT, A as AstroError, v as ActionNotFoundError, w as clientAddressSymbol, L as LocalsNotAnObject, x as REROUTABLE_STATUS_CODES, y as responseSentSymbol, z as nodeRequestAbortControllerCleanupSymbol } from './astro/server_D0lsQEZO.mjs';
+import colors from 'piccolore';
 import 'clsx';
-import 'cookie';
-import { f as default404Instance, D as DEFAULT_404_ROUTE, h as ensure404Route } from './astro-designed-error-pages_5Ze7Py6X.mjs';
+import { D as DEFAULT_404_ROUTE, e as default404Instance, f as ensure404Route } from './astro-designed-error-pages_CnoX-W89.mjs';
 import 'es-module-lexer';
 import buffer from 'node:buffer';
 import crypto$1 from 'node:crypto';
 import { Http2ServerResponse } from 'node:http2';
-import { f as fileExtension, j as joinPaths, s as slash, p as prependForwardSlash, r as removeTrailingForwardSlash, b as appendForwardSlash, c as collapseDuplicateTrailingSlashes, h as hasFileExtension } from './path_DQHtp1ua.mjs';
-import { r as requestHasLocale, c as requestIs404Or500, e as isRequestServerIsland, n as notFound, g as redirectToFallback, j as normalizeTheLocale, k as redirectToDefaultLocale, d as defineMiddleware, l as createEndpoint, S as SERVER_ISLAND_COMPONENT, m as SERVER_ISLAND_ROUTE, R as RouteCache, s as sequence, o as findRouteToRewrite, p as matchRoute, q as RenderContext, P as PERSIST_SYMBOL, t as getSetCookiesFromResponse } from './index_fRtLgeL3.mjs';
-import { N as NOOP_MIDDLEWARE_FN } from './noop-middleware_DZmXA2NY.mjs';
+import { f as fileExtension, j as joinPaths, s as slash, p as prependForwardSlash, a as removeTrailingForwardSlash, b as appendForwardSlash, c as isInternalPath, d as collapseDuplicateTrailingSlashes, h as hasFileExtension } from './path_Bl04Vi8h.mjs';
+import { m as matchPattern } from './index_CZWCDbwp.mjs';
+import { r as requestIs404Or500, i as isRequestServerIsland, n as notFound, a as redirectToFallback, b as redirectToDefaultLocale, c as requestHasLocale, e as normalizeTheLocale, f as defineMiddleware, S as SERVER_ISLAND_COMPONENT, h as SERVER_ISLAND_ROUTE, j as createEndpoint, R as RouteCache, s as sequence, k as findRouteToRewrite, v as validateAndDecodePathname, m as matchRoute, l as RenderContext, P as PERSIST_SYMBOL, o as getSetCookiesFromResponse } from './server_Ch6U-04c.mjs';
+import { N as NOOP_MIDDLEWARE_FN } from './noop-middleware_SDMKbWlQ.mjs';
 import '@vercel/routing-utils';
+import 'deterministic-object-hash';
 import nodePath from 'node:path';
 
 function createI18nMiddleware(i18n, base, trailingSlash, format) {
@@ -19,9 +20,7 @@ function createI18nMiddleware(i18n, base, trailingSlash, format) {
     ...i18n,
     trailingSlash,
     base,
-    format,
-    domains: {}
-  };
+    format};
   const _redirectToDefaultLocale = redirectToDefaultLocale(payload);
   const _noFoundForNonLocaleRoute = notFound(payload);
   const _requestHasLocale = requestHasLocale(payload.locales);
@@ -33,7 +32,7 @@ function createI18nMiddleware(i18n, base, trailingSlash, format) {
     } else if (!_requestHasLocale(context)) {
       return _noFoundForNonLocaleRoute(context, response);
     }
-    return undefined;
+    return void 0;
   };
   const prefixOtherLocales = (context, response) => {
     let pathnameContainsDefaultLocale = false;
@@ -49,7 +48,7 @@ function createI18nMiddleware(i18n, base, trailingSlash, format) {
       response.headers.set("Location", newLocation);
       return _noFoundForNonLocaleRoute(context);
     }
-    return undefined;
+    return void 0;
   };
   return async (context, next) => {
     const response = await next();
@@ -134,6 +133,10 @@ function localeHasntDomain(i18n, currentLocale) {
   return true;
 }
 
+const NOOP_ACTIONS_MOD = {
+  server: {}
+};
+
 const FORM_CONTENT_TYPES = [
   "application/x-www-form-urlencoded",
   "multipart/form-data",
@@ -198,7 +201,7 @@ function createDefaultRoutes(manifest) {
 }
 
 class Pipeline {
-  constructor(logger, manifest, runtimeMode, renderers, resolve, serverLike, streaming, adapterName = manifest.adapterName, clientDirectives = manifest.clientDirectives, inlinedScripts = manifest.inlinedScripts, compressHTML = manifest.compressHTML, i18n = manifest.i18n, middleware = manifest.middleware, routeCache = new RouteCache(logger, runtimeMode), site = manifest.site ? new URL(manifest.site) : undefined, defaultRoutes = createDefaultRoutes(manifest)) {
+  constructor(logger, manifest, runtimeMode, renderers, resolve, serverLike, streaming, adapterName = manifest.adapterName, clientDirectives = manifest.clientDirectives, inlinedScripts = manifest.inlinedScripts, compressHTML = manifest.compressHTML, i18n = manifest.i18n, middleware = manifest.middleware, routeCache = new RouteCache(logger, runtimeMode), site = manifest.site ? new URL(manifest.site) : void 0, defaultRoutes = createDefaultRoutes(manifest), actions = manifest.actions) {
     this.logger = logger;
     this.manifest = manifest;
     this.runtimeMode = runtimeMode;
@@ -215,6 +218,7 @@ class Pipeline {
     this.routeCache = routeCache;
     this.site = site;
     this.defaultRoutes = defaultRoutes;
+    this.actions = actions;
     this.internalMiddleware = [];
     if (i18n?.strategy !== "manual") {
       this.internalMiddleware.push(
@@ -223,7 +227,8 @@ class Pipeline {
     }
   }
   internalMiddleware;
-  resolvedMiddleware = undefined;
+  resolvedMiddleware = void 0;
+  resolvedActions = void 0;
   /**
    * Resolves the middleware from the manifest, and returns the `onRequest` function. If `onRequest` isn't there,
    * it returns a no-op function
@@ -234,16 +239,51 @@ class Pipeline {
     } else if (this.middleware) {
       const middlewareInstance = await this.middleware();
       const onRequest = middlewareInstance.onRequest ?? NOOP_MIDDLEWARE_FN;
+      const internalMiddlewares = [onRequest];
       if (this.manifest.checkOrigin) {
-        this.resolvedMiddleware = sequence(createOriginCheckMiddleware(), onRequest);
-      } else {
-        this.resolvedMiddleware = onRequest;
+        internalMiddlewares.unshift(createOriginCheckMiddleware());
       }
+      this.resolvedMiddleware = sequence(...internalMiddlewares);
       return this.resolvedMiddleware;
     } else {
       this.resolvedMiddleware = NOOP_MIDDLEWARE_FN;
       return this.resolvedMiddleware;
     }
+  }
+  setActions(actions) {
+    this.resolvedActions = actions;
+  }
+  async getActions() {
+    if (this.resolvedActions) {
+      return this.resolvedActions;
+    } else if (this.actions) {
+      return await this.actions();
+    }
+    return NOOP_ACTIONS_MOD;
+  }
+  async getAction(path) {
+    const pathKeys = path.split(".").map((key) => decodeURIComponent(key));
+    let { server } = await this.getActions();
+    if (!server || !(typeof server === "object")) {
+      throw new TypeError(
+        `Expected \`server\` export in actions file to be an object. Received ${typeof server}.`
+      );
+    }
+    for (const key of pathKeys) {
+      if (!(key in server)) {
+        throw new AstroError({
+          ...ActionNotFoundError,
+          message: ActionNotFoundError.message(pathKeys.join("."))
+        });
+      }
+      server = server[key];
+    }
+    if (typeof server !== "function") {
+      throw new TypeError(
+        `Expected handler for action ${pathKeys.join(".")} to be a function. Received ${typeof server}.`
+      );
+    }
+    return server;
   }
 }
 
@@ -308,7 +348,7 @@ function getEventPrefix({ level, label }) {
   const timestamp = `${dateTimeFormat.format(/* @__PURE__ */ new Date())}`;
   const prefix = [];
   if (level === "error" || level === "warn") {
-    prefix.push(bold(timestamp));
+    prefix.push(colors.bold(timestamp));
     prefix.push(`[${level.toUpperCase()}]`);
   } else {
     prefix.push(timestamp);
@@ -317,15 +357,15 @@ function getEventPrefix({ level, label }) {
     prefix.push(`[${label}]`);
   }
   if (level === "error") {
-    return red(prefix.join(" "));
+    return colors.red(prefix.join(" "));
   }
   if (level === "warn") {
-    return yellow(prefix.join(" "));
+    return colors.yellow(prefix.join(" "));
   }
   if (prefix.length === 1) {
-    return dim(prefix[0]);
+    return colors.dim(prefix[0]);
   }
-  return dim(prefix[0]) + " " + blue(prefix.splice(1).join(" "));
+  return colors.dim(prefix[0]) + " " + colors.blue(prefix.splice(1).join(" "));
 }
 class Logger {
   options;
@@ -382,7 +422,7 @@ const consoleLogDestination = {
   write(event) {
     let dest = console.error;
     if (levels[event.level] < levels["error"]) {
-      dest = console.log;
+      dest = console.info;
     }
     if (event.label === "SKIP_FORMAT") {
       dest(event.message);
@@ -394,26 +434,31 @@ const consoleLogDestination = {
 };
 
 function getAssetsPrefix(fileExtension, assetsPrefix) {
-  if (!assetsPrefix) return "";
-  if (typeof assetsPrefix === "string") return assetsPrefix;
-  const dotLessFileExtension = fileExtension.slice(1);
-  if (assetsPrefix[dotLessFileExtension]) {
-    return assetsPrefix[dotLessFileExtension];
+  let prefix = "";
+  if (!assetsPrefix) {
+    prefix = "";
+  } else if (typeof assetsPrefix === "string") {
+    prefix = assetsPrefix;
+  } else {
+    const dotLessFileExtension = fileExtension.slice(1);
+    prefix = assetsPrefix[dotLessFileExtension] || assetsPrefix.fallback;
   }
-  return assetsPrefix.fallback;
+  return prefix;
 }
 
-function createAssetLink(href, base, assetsPrefix) {
+function createAssetLink(href, base, assetsPrefix, queryParams) {
+  let url = "";
   if (assetsPrefix) {
     const pf = getAssetsPrefix(fileExtension(href), assetsPrefix);
-    return joinPaths(pf, slash(href));
+    url = joinPaths(pf, slash(href));
   } else if (base) {
-    return prependForwardSlash(joinPaths(base, slash(href)));
+    url = prependForwardSlash(joinPaths(base, slash(href)));
   } else {
-    return href;
+    url = href;
   }
+  return url;
 }
-function createStylesheetElement(stylesheet, base, assetsPrefix) {
+function createStylesheetElement(stylesheet, base, assetsPrefix, queryParams) {
   if (stylesheet.type === "inline") {
     return {
       props: {},
@@ -429,10 +474,12 @@ function createStylesheetElement(stylesheet, base, assetsPrefix) {
     };
   }
 }
-function createStylesheetElementSet(stylesheets, base, assetsPrefix) {
-  return new Set(stylesheets.map((s) => createStylesheetElement(s, base, assetsPrefix)));
+function createStylesheetElementSet(stylesheets, base, assetsPrefix, queryParams) {
+  return new Set(
+    stylesheets.map((s) => createStylesheetElement(s, base, assetsPrefix))
+  );
 }
-function createModuleScriptElement(script, base, assetsPrefix) {
+function createModuleScriptElement(script, base, assetsPrefix, queryParams) {
   if (script.type === "external") {
     return createModuleScriptElementWithSrc(script.value, base, assetsPrefix);
   } else {
@@ -444,7 +491,7 @@ function createModuleScriptElement(script, base, assetsPrefix) {
     };
   }
 }
-function createModuleScriptElementWithSrc(src, base, assetsPrefix) {
+function createModuleScriptElementWithSrc(src, base, assetsPrefix, queryParams) {
   return {
     props: {
       type: "module",
@@ -454,21 +501,25 @@ function createModuleScriptElementWithSrc(src, base, assetsPrefix) {
   };
 }
 
-function redirectTemplate({ status, location, from }) {
+function redirectTemplate({
+  status,
+  absoluteLocation,
+  relativeLocation,
+  from
+}) {
   const delay = status === 302 ? 2 : 0;
   return `<!doctype html>
-<title>Redirecting to: ${location}</title>
-<meta http-equiv="refresh" content="${delay};url=${location}">
+<title>Redirecting to: ${relativeLocation}</title>
+<meta http-equiv="refresh" content="${delay};url=${relativeLocation}">
 <meta name="robots" content="noindex">
-<link rel="canonical" href="${location}">
+<link rel="canonical" href="${absoluteLocation}">
 <body>
-	<a href="${location}">Redirecting ${from ? `from <code>${from}</code> ` : ""}to <code>${location}</code></a>
+	<a href="${relativeLocation}">Redirecting ${from ? `from <code>${from}</code> ` : ""}to <code>${relativeLocation}</code></a>
 </body>`;
 }
 
 class AppPipeline extends Pipeline {
-  #manifestData;
-  static create(manifestData, {
+  static create({
     logger,
     manifest,
     runtimeMode,
@@ -486,17 +537,16 @@ class AppPipeline extends Pipeline {
       resolve,
       serverLike,
       streaming,
-      undefined,
-      undefined,
-      undefined,
-      undefined,
-      undefined,
-      undefined,
-      undefined,
-      undefined,
+      void 0,
+      void 0,
+      void 0,
+      void 0,
+      void 0,
+      void 0,
+      void 0,
+      void 0,
       defaultRoutes
     );
-    pipeline.#manifestData = manifestData;
     return pipeline;
   }
   headElements(routeData) {
@@ -531,7 +581,8 @@ class AppPipeline extends Pipeline {
       routes: this.manifest?.routes.map((r) => r.routeData),
       trailingSlash: this.manifest.trailingSlash,
       buildFormat: this.manifest.buildFormat,
-      base: this.manifest.base
+      base: this.manifest.base,
+      outDir: this.serverLike ? this.manifest.buildClientDir : this.manifest.outDir
     });
     const componentInstance = await this.getComponentByRoute(routeData);
     return { newUrl, pathname, componentInstance, routeData };
@@ -576,7 +627,6 @@ class App {
   #baseWithoutTrailingSlash;
   #pipeline;
   #adapterLogger;
-  #renderOptionsDeprecationWarningShown = false;
   constructor(manifest, streaming = true) {
     this.#manifest = manifest;
     this.#manifestData = {
@@ -584,7 +634,7 @@ class App {
     };
     ensure404Route(this.#manifestData);
     this.#baseWithoutTrailingSlash = removeTrailingForwardSlash(this.#manifest.base);
-    this.#pipeline = this.#createPipeline(this.#manifestData, streaming);
+    this.#pipeline = this.#createPipeline(streaming);
     this.#adapterLogger = new AstroIntegrationLogger(
       this.#logger.options,
       this.#manifest.adapterName
@@ -593,15 +643,105 @@ class App {
   getAdapterLogger() {
     return this.#adapterLogger;
   }
+  getAllowedDomains() {
+    return this.#manifest.allowedDomains;
+  }
+  get manifest() {
+    return this.#manifest;
+  }
+  set manifest(value) {
+    this.#manifest = value;
+  }
+  matchesAllowedDomains(forwardedHost, protocol) {
+    return App.validateForwardedHost(forwardedHost, this.#manifest.allowedDomains, protocol);
+  }
+  static validateForwardedHost(forwardedHost, allowedDomains, protocol) {
+    if (!allowedDomains || allowedDomains.length === 0) {
+      return false;
+    }
+    try {
+      const testUrl = new URL(`${protocol || "https"}://${forwardedHost}`);
+      return allowedDomains.some((pattern) => {
+        return matchPattern(testUrl, pattern);
+      });
+    } catch {
+      return false;
+    }
+  }
+  /**
+   * Validate a hostname by rejecting any with path separators.
+   * Prevents path injection attacks. Invalid hostnames return undefined.
+   */
+  static sanitizeHost(hostname) {
+    if (!hostname) return void 0;
+    if (/[/\\]/.test(hostname)) return void 0;
+    return hostname;
+  }
+  /**
+   * Validate forwarded headers (proto, host, port) against allowedDomains.
+   * Returns validated values or undefined for rejected headers.
+   * Uses strict defaults: http/https only for proto, rejects port if not in allowedDomains.
+   */
+  static validateForwardedHeaders(forwardedProtocol, forwardedHost, forwardedPort, allowedDomains) {
+    const result = {};
+    if (forwardedProtocol) {
+      if (allowedDomains && allowedDomains.length > 0) {
+        const hasProtocolPatterns = allowedDomains.some(
+          (pattern) => pattern.protocol !== void 0
+        );
+        if (hasProtocolPatterns) {
+          try {
+            const testUrl = new URL(`${forwardedProtocol}://example.com`);
+            const isAllowed = allowedDomains.some((pattern) => matchPattern(testUrl, pattern));
+            if (isAllowed) {
+              result.protocol = forwardedProtocol;
+            }
+          } catch {
+          }
+        } else if (/^https?$/.test(forwardedProtocol)) {
+          result.protocol = forwardedProtocol;
+        }
+      } else if (/^https?$/.test(forwardedProtocol)) {
+        result.protocol = forwardedProtocol;
+      }
+    }
+    if (forwardedPort && allowedDomains && allowedDomains.length > 0) {
+      const hasPortPatterns = allowedDomains.some((pattern) => pattern.port !== void 0);
+      if (hasPortPatterns) {
+        const isAllowed = allowedDomains.some((pattern) => pattern.port === forwardedPort);
+        if (isAllowed) {
+          result.port = forwardedPort;
+        }
+      }
+    }
+    if (forwardedHost && forwardedHost.length > 0 && allowedDomains && allowedDomains.length > 0) {
+      const protoForValidation = result.protocol || "https";
+      const sanitized = App.sanitizeHost(forwardedHost);
+      if (sanitized) {
+        try {
+          const hostnameOnly = sanitized.split(":")[0];
+          const portFromHost = sanitized.includes(":") ? sanitized.split(":")[1] : void 0;
+          const portForValidation = result.port || portFromHost;
+          const hostWithPort = portForValidation ? `${hostnameOnly}:${portForValidation}` : hostnameOnly;
+          const testUrl = new URL(`${protoForValidation}://${hostWithPort}`);
+          const isAllowed = allowedDomains.some((pattern) => matchPattern(testUrl, pattern));
+          if (isAllowed) {
+            result.host = sanitized;
+          }
+        } catch {
+        }
+      }
+    }
+    return result;
+  }
   /**
    * Creates a pipeline by reading the stored manifest
    *
-   * @param manifestData
    * @param streaming
    * @private
    */
-  #createPipeline(manifestData, streaming = false) {
-    return AppPipeline.create(manifestData, {
+  #createPipeline(streaming = false) {
+    return AppPipeline.create({
       logger: this.#logger,
       manifest: this.#manifest,
       runtimeMode: "production",
@@ -642,37 +782,53 @@ class App {
     const url = new URL(request.url);
     const pathname = prependForwardSlash(this.removeBase(url.pathname));
     try {
-      return decodeURI(pathname);
+      return validateAndDecodePathname(pathname);
     } catch (e) {
       this.getAdapterLogger().error(e.toString());
       return pathname;
     }
   }
-  match(request) {
+  /**
+   * Given a `Request`, it returns the `RouteData` that matches its `pathname`. By default, prerendered
+   * routes aren't returned, even if they are matched.
+   *
+   * When `allowPrerenderedRoutes` is `true`, the function returns matched prerendered routes too.
+   * @param request
+   * @param allowPrerenderedRoutes
+   */
+  match(request, allowPrerenderedRoutes = false) {
     const url = new URL(request.url);
-    if (this.#manifest.assets.has(url.pathname)) return undefined;
+    if (this.#manifest.assets.has(url.pathname)) return void 0;
     let pathname = this.#computePathnameFromDomain(request);
     if (!pathname) {
       pathname = prependForwardSlash(this.removeBase(url.pathname));
     }
-    let routeData = matchRoute(decodeURI(pathname), this.#manifestData);
-    if (!routeData || routeData.prerender) return undefined;
+    try {
+      pathname = validateAndDecodePathname(pathname);
+    } catch {
+      return void 0;
+    }
+    let routeData = matchRoute(pathname, this.#manifestData);
+    if (!routeData) return void 0;
+    if (allowPrerenderedRoutes) {
+      return routeData;
+    } else if (routeData.prerender) {
+      return void 0;
+    }
     return routeData;
   }
   #computePathnameFromDomain(request) {
-    let pathname = undefined;
+    let pathname = void 0;
     const url = new URL(request.url);
     if (this.#manifest.i18n && (this.#manifest.i18n.strategy === "domains-prefix-always" || this.#manifest.i18n.strategy === "domains-prefix-other-locales" || this.#manifest.i18n.strategy === "domains-prefix-always-no-redirect")) {
-      let host = request.headers.get("X-Forwarded-Host");
-      let protocol = request.headers.get("X-Forwarded-Proto");
-      if (protocol) {
-        protocol = protocol + ":";
-      } else {
-        protocol = url.protocol;
-      }
-      if (!host) {
-        host = request.headers.get("Host");
-      }
+      const validated = App.validateForwardedHeaders(
+        request.headers.get("X-Forwarded-Proto") ?? void 0,
+        request.headers.get("X-Forwarded-Host") ?? void 0,
+        request.headers.get("X-Forwarded-Port") ?? void 0,
+        this.#manifest.allowedDomains
+      );
+      let protocol = validated.protocol ? validated.protocol + ":" : url.protocol;
+      let host = validated.host ?? request.headers.get("Host");
       if (host && protocol) {
         host = host.split(":")[0];
         try {
@@ -708,7 +864,7 @@ class App {
   }
   #redirectTrailingSlash(pathname) {
     const { trailingSlash } = this.#manifest;
-    if (pathname === "/" || pathname.startsWith("/_")) {
+    if (pathname === "/" || isInternalPath(pathname)) {
       return pathname;
     }
     const path = collapseDuplicateTrailingSlashes(pathname, trailingSlash !== "never");
@@ -733,14 +889,23 @@ class App {
     let addCookieHeader;
     const url = new URL(request.url);
     const redirect = this.#redirectTrailingSlash(url.pathname);
+    const prerenderedErrorPageFetch = renderOptions?.prerenderedErrorPageFetch ?? fetch;
     if (redirect !== url.pathname) {
       const status = request.method === "GET" ? 301 : 308;
-      return new Response(redirectTemplate({ status, location: redirect, from: request.url }), {
-        status,
-        headers: {
-          location: redirect + url.search
+      return new Response(
+        redirectTemplate({
+          status,
+          relativeLocation: url.pathname,
+          absoluteLocation: redirect,
+          from: request.url
+        }),
+        {
+          status,
+          headers: {
+            location: redirect + url.search
+          }
         }
-      });
+      );
     }
     addCookieHeader = renderOptions?.addCookieHeader;
     clientAddress = renderOptions?.clientAddress ?? Reflect.get(request, clientAddressSymbol);
@@ -758,7 +923,12 @@ class App {
       if (typeof locals !== "object") {
         const error = new AstroError(LocalsNotAnObject);
         this.#logger.error(null, error.stack);
-        return this.#renderError(request, { status: 500, error, clientAddress });
+        return this.#renderError(request, {
+          status: 500,
+          error,
+          clientAddress,
+          prerenderedErrorPageFetch
+        });
       }
     }
     if (!routeData) {
@@ -767,9 +937,19 @@ class App {
       this.#logger.debug("router", "RouteData:\n" + routeData);
     }
     if (!routeData) {
+      routeData = this.#manifestData.routes.find(
+        (route) => route.component === "404.astro" || route.component === DEFAULT_404_COMPONENT
+      );
+    }
+    if (!routeData) {
       this.#logger.debug("router", "Astro hasn't found routes that match " + request.url);
       this.#logger.debug("router", "Here's the available routes:\n", this.#manifestData);
-      return this.#renderError(request, { locals, status: 404, clientAddress });
+      return this.#renderError(request, {
+        locals,
+        status: 404,
+        clientAddress,
+        prerenderedErrorPageFetch
+      });
     }
     const pathname = this.#getPathnameFromRequest(request);
     const defaultStatus = this.#getDefaultStatusCode(routeData, pathname);
@@ -790,19 +970,28 @@ class App {
       response = await renderContext.render(await mod.page());
     } catch (err) {
       this.#logger.error(null, err.stack || err.message || String(err));
-      return this.#renderError(request, { locals, status: 500, error: err, clientAddress });
+      return this.#renderError(request, {
+        locals,
+        status: 500,
+        error: err,
+        clientAddress,
+        prerenderedErrorPageFetch
+      });
     } finally {
       await session?.[PERSIST_SYMBOL]();
     }
-    if (REROUTABLE_STATUS_CODES.includes(response.status) && response.headers.get(REROUTE_DIRECTIVE_HEADER) !== "no") {
+    if (REROUTABLE_STATUS_CODES.includes(response.status) && // If the body isn't null, that means the user sets the 404 status
+    // but uses the current route to handle the 404
+    response.body === null && response.headers.get(REROUTE_DIRECTIVE_HEADER) !== "no") {
       return this.#renderError(request, {
         locals,
         response,
         status: response.status,
         // We don't have an error to report here. Passing null means we pass nothing intentionally
         // while undefined means there's no error
-        error: response.status === 500 ? null : undefined,
-        clientAddress
+        error: response.status === 500 ? null : void 0,
+        clientAddress,
+        prerenderedErrorPageFetch
       });
     }
     if (response.headers.has(REROUTE_DIRECTIVE_HEADER)) {
@@ -841,7 +1030,8 @@ class App {
     response: originalResponse,
     skipMiddleware = false,
     error,
-    clientAddress
+    clientAddress,
+    prerenderedErrorPageFetch
   }) {
     const errorRoutePath = `/${status}${this.#manifest.trailingSlash === "always" ? "/" : ""}`;
     const errorRouteData = matchRoute(errorRoutePath, this.#manifestData);
@@ -854,8 +1044,8 @@ class App {
           url
         );
         if (statusURL.toString() !== request.url) {
-          const response2 = await fetch(statusURL.toString());
-          const override = { status };
+          const response2 = await prerenderedErrorPageFetch(statusURL.toString());
+          const override = { status, removeContentEncodingHeaders: true };
           return this.#mergeResponses(response2, originalResponse, override);
         }
       }
@@ -883,7 +1073,8 @@ class App {
             status,
             response: originalResponse,
             skipMiddleware: true,
-            clientAddress
+            clientAddress,
+            prerenderedErrorPageFetch
           });
         }
       } finally {
@@ -895,12 +1086,18 @@ class App {
     return response;
   }
   #mergeResponses(newResponse, originalResponse, override) {
+    let newResponseHeaders = newResponse.headers;
+    if (override?.removeContentEncodingHeaders) {
+      newResponseHeaders = new Headers(newResponseHeaders);
+      newResponseHeaders.delete("Content-Encoding");
+      newResponseHeaders.delete("Content-Length");
+    }
     if (!originalResponse) {
-      if (override !== undefined) {
+      if (override !== void 0) {
         return new Response(newResponse.body, {
           status: override.status,
           statusText: newResponse.statusText,
-          headers: newResponse.headers
+          headers: newResponseHeaders
         });
       }
       return newResponse;
@@ -911,7 +1108,7 @@ class App {
     } catch {
     }
     const mergedHeaders = new Map([
-      ...Array.from(newResponse.headers),
+      ...Array.from(newResponseHeaders),
       ...Array.from(originalResponse.headers)
     ]);
     const newHeaders = new Headers();
@@ -946,11 +1143,11 @@ class App {
 
 const createOutgoingHttpHeaders = (headers) => {
   if (!headers) {
-    return undefined;
+    return void 0;
   }
   const nodeHeaders = Object.fromEntries(headers.entries());
   if (Object.keys(nodeHeaders).length === 0) {
-    return undefined;
+    return void 0;
   }
   if (headers.has("set-cookie")) {
     const cookieHeaders = headers.getSetCookie();
@@ -975,17 +1172,24 @@ function apply() {
 }
 
 class NodeApp extends App {
-  match(req) {
+  headersMap = void 0;
+  setHeadersMap(headers) {
+    this.headersMap = headers;
+  }
+  match(req, allowPrerenderedRoutes = false) {
     if (!(req instanceof Request)) {
       req = NodeApp.createRequest(req, {
-        skipBody: true
+        skipBody: true,
+        allowedDomains: this.manifest.allowedDomains
       });
     }
-    return super.match(req);
+    return super.match(req, allowPrerenderedRoutes);
   }
   render(req, routeDataOrOptions, maybeLocals) {
     if (!(req instanceof Request)) {
-      req = NodeApp.createRequest(req);
+      req = NodeApp.createRequest(req, {
+        allowedDomains: this.manifest.allowedDomains
+      });
     }
     return super.render(req, routeDataOrOptions, maybeLocals);
   }
@@ -1002,28 +1206,81 @@ class NodeApp extends App {
    * })
    * ```
    */
-  static createRequest(req, { skipBody = false } = {}) {
+  static createRequest(req, {
+    skipBody = false,
+    allowedDomains = []
+  } = {}) {
+    const controller = new AbortController();
     const isEncrypted = "encrypted" in req.socket && req.socket.encrypted;
     const getFirstForwardedValue = (multiValueHeader) => {
       return multiValueHeader?.toString()?.split(",").map((e) => e.trim())?.[0];
     };
-    const forwardedProtocol = getFirstForwardedValue(req.headers["x-forwarded-proto"]);
-    const protocol = forwardedProtocol ?? (isEncrypted ? "https" : "http");
-    const forwardedHostname = getFirstForwardedValue(req.headers["x-forwarded-host"]);
-    const hostname = forwardedHostname ?? req.headers.host ?? req.headers[":authority"];
-    const port = getFirstForwardedValue(req.headers["x-forwarded-port"]);
-    const portInHostname = typeof hostname === "string" && /:\d+$/.test(hostname);
-    const hostnamePort = portInHostname ? hostname : `${hostname}${port ? `:${port}` : ""}`;
-    const url = `${protocol}://${hostnamePort}${req.url}`;
+    const providedProtocol = isEncrypted ? "https" : "http";
+    const providedHostname = req.headers.host ?? req.headers[":authority"];
+    const validated = App.validateForwardedHeaders(
+      getFirstForwardedValue(req.headers["x-forwarded-proto"]),
+      getFirstForwardedValue(req.headers["x-forwarded-host"]),
+      getFirstForwardedValue(req.headers["x-forwarded-port"]),
+      allowedDomains
+    );
+    const protocol = validated.protocol ?? providedProtocol;
+    const sanitizedProvidedHostname = App.sanitizeHost(
+      typeof providedHostname === "string" ? providedHostname : void 0
+    );
+    const hostname = validated.host ?? sanitizedProvidedHostname;
+    const port = validated.port;
+    let url;
+    try {
+      const hostnamePort = getHostnamePort(hostname, port);
+      url = new URL(`${protocol}://${hostnamePort}${req.url}`);
+    } catch {
+      const hostnamePort = getHostnamePort(providedHostname, port);
+      url = new URL(`${providedProtocol}://${hostnamePort}`);
+    }
     const options = {
       method: req.method || "GET",
-      headers: makeRequestHeaders(req)
+      headers: makeRequestHeaders(req),
+      signal: controller.signal
     };
     const bodyAllowed = options.method !== "HEAD" && options.method !== "GET" && skipBody === false;
     if (bodyAllowed) {
       Object.assign(options, makeRequestBody(req));
     }
     const request = new Request(url, options);
+    const socket = getRequestSocket(req);
+    if (socket && typeof socket.on === "function") {
+      const existingCleanup = getAbortControllerCleanup(req);
+      if (existingCleanup) {
+        existingCleanup();
+      }
+      let cleanedUp = false;
+      const removeSocketListener = () => {
+        if (typeof socket.off === "function") {
+          socket.off("close", onSocketClose);
+        } else if (typeof socket.removeListener === "function") {
+          socket.removeListener("close", onSocketClose);
+        }
+      };
+      const cleanup = () => {
+        if (cleanedUp) return;
+        cleanedUp = true;
+        removeSocketListener();
+        controller.signal.removeEventListener("abort", cleanup);
+        Reflect.deleteProperty(req, nodeRequestAbortControllerCleanupSymbol);
+      };
+      const onSocketClose = () => {
+        cleanup();
+        if (!controller.signal.aborted) {
+          controller.abort();
+        }
+      };
+      socket.on("close", onSocketClose);
+      controller.signal.addEventListener("abort", cleanup, { once: true });
+      Reflect.set(req, nodeRequestAbortControllerCleanupSymbol, cleanup);
+      if (socket.destroyed) {
+        onSocketClose();
+      }
+    }
     const forwardedClientIp = getFirstForwardedValue(req.headers["x-forwarded-for"]);
     const clientIp = forwardedClientIp || req.socket?.remoteAddress;
     if (clientIp) {
@@ -1052,6 +1309,23 @@ class NodeApp extends App {
       destination.statusMessage = statusText;
     }
     destination.writeHead(status, createOutgoingHttpHeaders(headers));
+    const cleanupAbortFromDestination = getAbortControllerCleanup(
+      destination.req ?? void 0
+    );
+    if (cleanupAbortFromDestination) {
+      const runCleanup = () => {
+        cleanupAbortFromDestination();
+        if (typeof destination.off === "function") {
+          destination.off("finish", runCleanup);
+          destination.off("close", runCleanup);
+        } else {
+          destination.removeListener?.("finish", runCleanup);
+          destination.removeListener?.("close", runCleanup);
+        }
+      };
+      destination.on("finish", runCleanup);
+      destination.on("close", runCleanup);
+    }
     if (!body) return destination.end();
     try {
       const reader = body.getReader();
@@ -1076,10 +1350,15 @@ class NodeApp extends App {
     }
   }
 }
+function getHostnamePort(hostname, port) {
+  const portInHostname = typeof hostname === "string" && /:\d+$/.test(hostname);
+  const hostnamePort = portInHostname ? hostname : `${hostname}${port ? `:${port}` : ""}`;
+  return hostnamePort;
+}
 function makeRequestHeaders(req) {
   const headers = new Headers();
   for (const [name, value] of Object.entries(req.headers)) {
-    if (value === undefined) {
+    if (value === void 0) {
       continue;
     }
     if (Array.isArray(value)) {
@@ -1093,7 +1372,7 @@ function makeRequestHeaders(req) {
   return headers;
 }
 function makeRequestBody(req) {
-  if (req.body !== undefined) {
+  if (req.body !== void 0) {
     if (typeof req.body === "string" && req.body.length > 0) {
       return { body: Buffer.from(req.body) };
     }
@@ -1118,6 +1397,21 @@ function asyncIterableToBodyProps(iterable) {
     duplex: "half"
   };
 }
+function getAbortControllerCleanup(req) {
+  if (!req) return void 0;
+  const cleanup = Reflect.get(req, nodeRequestAbortControllerCleanupSymbol);
+  return typeof cleanup === "function" ? cleanup : void 0;
+}
+function getRequestSocket(req) {
+  if (req.socket && typeof req.socket.on === "function") {
+    return req.socket;
+  }
+  const http2Socket = req.stream?.session?.socket;
+  if (http2Socket && typeof http2Socket.on === "function") {
+    return http2Socket;
+  }
+  return void 0;
+}
 
 apply();
 
@@ -1128,7 +1422,10 @@ const ASTRO_PATH_PARAM = "x_astro_path";
 const ASTRO_LOCALS_HEADER = "x-astro-locals";
 const ASTRO_MIDDLEWARE_SECRET_HEADER = "x-astro-middleware-secret";
 
-const createExports = (manifest, { middlewareSecret, skewProtection }) => {
+const createExports = (manifest, {
+  middlewareSecret,
+  skewProtection
+}) => {
   const app = new NodeApp(manifest);
   const handler = async (req, res) => {
     const url = new URL(`https://example.com${req.url}`);
@@ -1152,12 +1449,24 @@ const createExports = (manifest, { middlewareSecret, skewProtection }) => {
     if (skewProtection && process.env.VERCEL_SKEW_PROTECTION_ENABLED === "1") {
       req.headers["x-deployment-id"] = process.env.VERCEL_DEPLOYMENT_ID;
     }
-    const webResponse = await app.render(req, { addCookieHeader: true, clientAddress, locals });
+    const webResponse = await app.render(req, {
+      addCookieHeader: true,
+      clientAddress,
+      locals
+    });
     await NodeApp.writeResponse(webResponse, res);
   };
-  return { default: handler };
+  return {
+    default: handler
+  };
 };
 function start() {
 }
 
-export { createExports as c, start as s };
+const serverEntrypointModule = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({
+  __proto__: null,
+  createExports,
+  start
+}, Symbol.toStringTag, { value: 'Module' }));
+
+export { start as a, createExports as c, serverEntrypointModule as s };

@@ -1,8 +1,8 @@
-import { c as createComponent, r as renderTemplate } from '../chunks/astro/server_XkzkhHpx.mjs';
-import 'kleur/colors';
+import { c as createComponent, r as renderTemplate } from '../chunks/astro/server_D0lsQEZO.mjs';
+import 'piccolore';
 import 'clsx';
-import { d as db, P as Post } from '../chunks/_astro_db_Dj1Q2wxM.mjs';
-import { g as getCollection } from '../chunks/_astro_content_CzhDOdhl.mjs';
+import { d as db, P as Post } from '../chunks/_astro_db_BW3zQ1fH.mjs';
+import { g as getCollection } from '../chunks/_astro_content_yzb9KPVH.mjs';
 import crypto from 'crypto';
 import { eq } from '@astrojs/db/dist/runtime/virtual.js';
 export { renderers } from '../renderers.mjs';
@@ -44,8 +44,8 @@ const $$DbInit = createComponent(async ($$result, $$props, $$slots) => {
     }
   }
   return renderTemplate``;
-}, "/home/kali/code/zessu.github.io/src/pages/__db-init.astro", undefined);
-const $$file = "/home/kali/code/zessu.github.io/src/pages/__db-init.astro";
+}, "/home/ddrew/code/zessu.github.io/src/pages/__db-init.astro", void 0);
+const $$file = "/home/ddrew/code/zessu.github.io/src/pages/__db-init.astro";
 const $$url = "/__db-init";
 
 const _page = /*#__PURE__*/Object.freeze(/*#__PURE__*/Object.defineProperty({

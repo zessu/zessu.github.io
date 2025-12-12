@@ -1,5 +1,5 @@
-import { g as AstroJSX, h as renderJSX, i as createVNode, j as AstroUserError } from './chunks/astro/server_XkzkhHpx.mjs';
-import 'kleur/colors';
+import { l as renderJSX, n as createVNode, o as AstroJSX, p as AstroUserError } from './chunks/astro/server_D0lsQEZO.mjs';
+import 'piccolore';
 import 'clsx';
 
 const slotName = (str) => str.trim().replace(/[-_]([a-z])/g, (_, w) => w.toUpperCase());
@@ -48,6 +48,6 @@ const renderer = {
 };
 var server_default = renderer;
 
-const renderers = [Object.assign({"name":"astro:jsx","serverEntrypoint":"file:///home/kali/code/zessu.github.io/node_modules/@astrojs/mdx/dist/server.js"}, { ssr: server_default }),];
+const renderers = [Object.assign({"name":"astro:jsx","serverEntrypoint":"file:///home/ddrew/code/zessu.github.io/node_modules/@astrojs/mdx/dist/server.js"}, { ssr: server_default }),];
 
 export { renderers };
