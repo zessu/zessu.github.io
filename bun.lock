@@ -11,6 +11,7 @@
         "@astrojs/sitemap": "^3.6.0",
         "@astrojs/vercel": "^8.2.11",
         "@fontsource-variable/inter": "^5.2.8",
+        "@fontsource-variable/roboto-mono": "^5.2.8",
         "@fontsource/twinkle-star": "^5.2.8",
         "@tailwindcss/vite": "^4.1.18",
         "astro": "^5.16.5",
@@ -108,6 +109,8 @@
     "@esbuild/win32-x64": ["@esbuild/win32-x64@0.25.0", "", { "os": "win32", "cpu": "x64" }, "sha512-ZENoHJBxA20C2zFzh6AI4fT6RraMzjYw4xKWemRTRmRVtN9c5DcH9r/f2ihEkMjOW5eGgrwCslG/+Y/3bL+DHQ=="],
 
     "@fontsource-variable/inter": ["@fontsource-variable/inter@5.2.8", "", {}, "sha512-kOfP2D+ykbcX/P3IFnokOhVRNoTozo5/JxhAIVYLpea/UBmCQ/YWPBfWIDuBImXX/15KH+eKh4xpEUyS2sQQGQ=="],
+
+    "@fontsource-variable/roboto-mono": ["@fontsource-variable/roboto-mono@5.2.8", "", {}, "sha512-6M2U3wGIUxYNKRrUoKls8BRRIPDA57T8J0agqwyDkiEHrLEEAqptsxcUl3eTm6tnRNEn6yEm4pCefvtnujebDA=="],
 
     "@fontsource/twinkle-star": ["@fontsource/twinkle-star@5.2.8", "", {}, "sha512-zaurm+x4T/Bl3yO6dZz9hySbH6OUPdDyl9QbP3XYHUj7eZr2ZG64wFyOIhIqdJwc8umUZkWeBa+Q8+A1WIAIGw=="],
 
