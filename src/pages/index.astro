@@ -16,9 +16,10 @@ const posts = (await getCollection("blog")).sort(
   <head>
     <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
   </head>
-  <body>
+  <div>
     <Header />
-    <main>
+    <main class="flex flex-col items-center justify-center p-4">
+      <div class="w-full sm:w-[70%]">
       <h3>Hi There!👋</h3>
       <p>
         I'm Drew, a Javascript/TypeScript enthusiast, full-stack developer. I am
@@ -52,13 +53,14 @@ const posts = (await getCollection("blog")).sort(
       </section>
 
       <div class="mt-4">
-        📮 Contact me via
+        📮
         <a
           href="mailto:spew-santa-railway@duck.com"
-          aria-label="Email spew-santa-railway@duck.com">Email</a
+          aria-label="Email spew-santa-railway@duck.com">Contact Me</a
         >
       </div>
     </main>
+    </div>
     <Footer />
-  </body>
+  </div>
 </html>
