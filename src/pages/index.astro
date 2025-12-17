@@ -38,7 +38,7 @@ const posts = (await getCollection("blog")).sort(
             posts.map((post) => (
               <div class="flex flex-row">
               <div>🗒️ </div>
-              <div class="date ml-2">
+              <div class="date ml-2 hidden sm:block">
                 <FormattedDate date={post.data.pubDate} />
               </div>
               <div class="flex-2">
