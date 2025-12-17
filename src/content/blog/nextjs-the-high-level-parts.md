@@ -9,13 +9,13 @@ pubDate: "Dec 12 2025"
 
 <br />
 
-#### `Why NEXT JS`
+#### `🔵Why NEXT JS`
 
 **Nextjs** was originally built to solve one main problem with client rendered components. **SEO**. With client side framworks like react, code is rendered on the client. This involves fetching a bundle of JS and hydrating everything on the client. There is really no way for search engines to index our sites.
 
 Indexing is important because it enables your page to show up on Google search. If you are selling Mahogany tables on your site, you want to have organic traffic to your site when someone searches for mahogany tables on google. As such you want google and other search engines to be able to parse and index the different pages with products on your site and for them to do this, the content has to be rendered on the server.
 
-#### `Server vs Client Components`
+#### `🟡Server vs Client Components`
 
 Server components are components rendered on the server and client components are components rendered on the client. Why a differentiation? Well because some components still need client side interactivity. We usually render pages on the server that do not need any complex interactivity. Think header and footers. They mostly contain links to other pages. These are prime targets for server rendered content
 
@@ -70,7 +70,7 @@ export function CommentForm() {
 
 <br />
 
-#### `The how`
+#### `🟢The how`
 
 So now that we have seen client and server components, it is clear why we might need both. Server components help with **SEO** and also help render content on the server that we can immediately view. We get static HTML fast. Client components use react and run on the client so we get all the benefits of react that we do not get with server rendered templating engines like *Razor Pages, PHP, HandleBar JS*. ie complex client-side state management, component re-usability and modelling, virtual DOM diffing, good DX, hot reloading in dev e.t.c
 
@@ -133,7 +133,7 @@ Here, it knows it needs to load some code from the server. The id is the identif
 
 So in this case next knows to load the client code for the comment form, which it does using a fetch request. This is then rendered and hydrated using react. Now we understand how both server and client components are rendered.
 
-#### `The RSC payload, Suspense, Serialization and CVE's`
+#### `🟣The RSC payload, Suspense, Serialization and CVE's`
 
 The **RSC** payload is a binary format that next uses to send data to the client in the case of client components but also from the client to the server with the `server actions` feature. All communication back and forth is done using RSC payloads with a protocol called the **flight protocol** that defines serialization formas and standards for communication from client to server.
 
@@ -181,11 +181,11 @@ In this case our RSC payload has to tell nextjs what function to call on the ser
 
 Anytime you take user input from the client and you want to use it on the server, you need to sanitize it well. A critical vulnerability recently exploited next js by giving it malicious input allowing remote code execution once next evaluated the user provided input. This is explained here <https://nextjs.org/blog/CVE-66478> . I also wrote a proof of concept I wrote here <https://github.com/zessu/CVE-2025-55182-Typescript/blob/master/poc.ts>
 
-### Conclusion
+### `🟠Conclusion`
 
 So hopefully you now have a better understanding of how server components and client components work and a better understanding of next js, where client and server components are rendered, how they are rendered and how communication happens between the client and the server.
 
-Often times I here people say next.js is just JS coming *full circle*, PHP style and I hope this article shows you the difference. Next can server side render content like PHP, .NET, [Handlebars.js](https://handlebarsjs.com/) and Django but it also lets us use react for our client components. We get the best of both worlds, server rendered content where we need it and a full JS framework with virtual DOM, state, components, signals e.t.c while still giving us other next js features like server actions, caching, [an amazing router](https://nextjs.org/docs/pages/building-your-application/routing), Image optimization components, Font Optimizations and unified developer experience e.t.c
+Often times I hear people say next.js is just JS coming *full circle*, PHP style and I hope this article shows you the difference. Next can server side render content like PHP, .NET, [Handlebars.js](https://handlebarsjs.com/) and Django but it also lets us use react for our client components. We get the best of both worlds, server rendered content where we need it and a full JS framework with virtual DOM, state, components, signals e.t.c while still giving us other next js features like server actions, caching, [an amazing router](https://nextjs.org/docs/pages/building-your-application/routing), Image optimization components, Font Optimizations and unified developer experience e.t.c
 
 #### References
 
