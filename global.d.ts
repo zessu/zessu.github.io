@@ -1,1 +1,1 @@
-declare const confetti: typeof import("canvas-confetti").default;
+eclare const confetti: typeof import("canvas-confetti").default;

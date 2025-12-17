@@ -13,9 +13,9 @@ const paddedDay = String(day).padStart(2, '0');
 
 const year = date.getFullYear();
 
-const displayDate = `${month} ${paddedDay} ${year}:`;
+const displayDate = `${month}-${paddedDay}-${year}`;
 ---
 
-<time datetime={date.toISOString()}>
+<time datetime={date.toISOString()} class="font-(family-name:--my-date-font) font-semibold tracking-tight">
   {displayDate}
 </time>

@@ -37,15 +37,15 @@ const posts = (await getCollection("blog")).sort(
           {
             posts.map((post) => (
               <div class="flex flex-row">
-              <span>🗒️ </span>
-              <span class="date ml-2 min-w-32 hidden sm:block">
-                  <FormattedDate date={post.data.pubDate} />
-              </span>
-              <span>
+              <div>🗒️ </div>
+              <div class="date ml-2">
+                <FormattedDate date={post.data.pubDate} />
+              </div>
+              <div class="flex-2">
                   <a href={`/blog/${post.id}/`}>
-                  <span class="title ml-2">{post.data.title}</span>
+                  <div class="title ml-2">{post.data.title}</div>
                 </a>
-              </span>
+              </div>
               </div>
             ))
           }
