@@ -11,7 +11,7 @@
   --fntColor:#000;
 }
 
-.darkmode {
+html.darkmode {
   --accent:#FFA8CE;
   --gray:#ECE4BB;
   --gray-light: #534D49;

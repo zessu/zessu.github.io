@@ -2,7 +2,6 @@
 import HeaderLink from "./HeaderLink.astro";
 import { SITE_TITLE } from "../consts";
 ---
-
 <header>
   <nav>
     <div>
@@ -138,12 +137,12 @@ import { SITE_TITLE } from "../consts";
     display: none;
   }
 
-  body.darkmode #theme-switch svg:last-child {
+  html.darkmode #theme-switch svg:last-child {
     display: block;
   }
 
 
-  body.darkmode #theme-switch svg:first-child {
+  html.darkmode #theme-switch svg:first-child {
     display: none;
   }
 
@@ -152,24 +151,14 @@ import { SITE_TITLE } from "../consts";
 
 
 <script>
+    const themeSwitchButton = document.getElementById('theme-switch');
 
-if(localStorage.getItem("darkmode")) {
-    document.body.classList.add('darkmode');
-}
-
-const themeSwitchButton = document.getElementById("theme-switch");
-
-themeSwitchButton?.addEventListener("click", () => {
-  const darkMode = localStorage.getItem("darkmode");
-
-  if(!darkMode) {
-    document.body.classList.add('darkmode');
-    localStorage.setItem("darkmode", "darkmode");
-    return;
-  }
-  
-  document.body.classList.remove('darkmode');
-  localStorage.removeItem("darkmode");
-});
-
+    themeSwitchButton?.addEventListener('click', () => {
+        document.documentElement.classList.toggle('darkmode');
+        if (document.documentElement.classList.contains('darkmode')) {
+            localStorage.setItem('darkmode', 'true');
+        } else {
+            localStorage.removeItem('darkmode');
+        }
+    });
 </script>
