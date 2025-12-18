@@ -95,7 +95,7 @@ const { title, description, pubDate, updatedDate, likes, reads, hash } =
       }
 
       .prose {
-        color: rgb(var(--gray-dark));
+        color: var(--fontColor);
       }
 
       .title {
@@ -105,7 +105,7 @@ const { title, description, pubDate, updatedDate, likes, reads, hash } =
 
       .date {
         margin-bottom: 0.5em;
-        color: rgb(var(--gray));
+        color: var(--gray);
       }
 
       .last-updated-on {
@@ -125,7 +125,7 @@ const { title, description, pubDate, updatedDate, likes, reads, hash } =
     </style>
   </head>
 
-  <body>
+  <body class="">
     <Header />
     <main class="flex flex-col items-center justify-center p-4">
       <div class="w-full sm:w-[90%]">
