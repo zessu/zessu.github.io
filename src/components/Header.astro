@@ -138,12 +138,12 @@ import { SITE_TITLE } from "../consts";
     display: none;
   }
 
-  .darkmode #theme-switch svg:last-child {
+  body.darkmode #theme-switch svg:last-child {
     display: block;
   }
 
 
-  .darkmode #theme-switch svg:first-child {
+  body.darkmode #theme-switch svg:first-child {
     display: none;
   }
 
@@ -153,15 +153,14 @@ import { SITE_TITLE } from "../consts";
 
 <script>
 
-let darkMode = localStorage.getItem("darkmode");
-if(darkMode) {
+if(localStorage.getItem("darkmode")) {
     document.body.classList.add('darkmode');
 }
 
 const themeSwitchButton = document.getElementById("theme-switch");
 
 themeSwitchButton?.addEventListener("click", () => {
-  let darkMode = localStorage.getItem("darkmode");
+  const darkMode = localStorage.getItem("darkmode");
 
   if(!darkMode) {
     document.body.classList.add('darkmode');
