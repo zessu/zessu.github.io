@@ -4,6 +4,10 @@ import "@fontsource/twinkle-star";
 import '@fontsource-variable/roboto-mono';
 import '@fontsource-variable/geist';
 
+import twinkleStarFont from '@fontsource/twinkle-star/files/twinkle-star-latin-400-normal.woff2';
+import geistFont from '@fontsource-variable/geist/files/geist-latin-wght-normal.woff2';
+import robotoMonoFont from '@fontsource-variable/roboto-mono/files/roboto-mono-latin-wght-normal.woff2';
+
 interface Props {
   title: string;
   description: string;
@@ -18,6 +22,9 @@ const { title, description, image = "/blog-placeholder-1.jpg" } = Astro.props;
 <!-- Global Metadata -->
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
+<link rel="preload" href={twinkleStarFont} as="font" type="font/woff2" crossorigin />
+<link rel="preload" href={geistFont} as="font" type="font/woff2" crossorigin />
+<link rel="preload" href={robotoMonoFont} as="font" type="font/woff2" crossorigin />
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 <meta name="generator" content={Astro.generator} />
 
