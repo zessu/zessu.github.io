@@ -3,18 +3,16 @@
 :root {
   --my-date-font: 'Roboto Mono Variable';
   --accent: #2337ff;
-  --accent-dark: #000d8a;
   --gray:#6B7280;
   --gray-light:#E5E9F0;
   --gray-dark: 34, 41, 57;
-  --bgColor: #fff;;
+  --bgColor: #fff;
   --logoColor:#1e3a8a;
   --fntColor:#000;
 }
 
 .darkmode {
   --accent:#FFA8CE;
-  --accent-dark: red;
   --gray:#ECE4BB;
   --gray-light: #534D49;
   --gray-dark: 34, 41, 57;
