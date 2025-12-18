@@ -16,12 +16,12 @@ const posts = (await getCollection("blog")).sort(
   <head>
     <BaseHead title={SITE_TITLE} description={SITE_DESCRIPTION} />
   </head>
-  <div>
+  <body class="">
     <Header />
     <main class="flex flex-col items-center justify-center p-4">
       <div class="w-full sm:w-[70%]">
       <h3>Hi There!👋</h3>
-      <p>
+      <p class="text-md">
         I'm Drew, a Javascript/TypeScript enthusiast, full-stack developer. I am
         into system architecture, malware development, blockchain/web3 and
           cybersecurity. I mostly work with javascript/typescript, react, shadcn, 
@@ -36,7 +36,7 @@ const posts = (await getCollection("blog")).sort(
         <ul>
           {
             posts.map((post) => (
-              <div class="flex flex-row">
+              <div class="flex flex-row text-base">
               <div>🗒️ </div>
               <div class="date ml-2 hidden sm:block">
                 <FormattedDate date={post.data.pubDate} />
@@ -60,7 +60,7 @@ const posts = (await getCollection("blog")).sort(
         >
       </div>
     </main>
-    </div>
+    </body>
     <Footer />
-  </div>
+  </body>
 </html>
