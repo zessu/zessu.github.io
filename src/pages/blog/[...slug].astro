@@ -39,8 +39,10 @@ type Props = CollectionEntry<"blog"> & {
   reads: number;
   hash: string;
 };
+
 const post = Astro.props;
 const { Content } = await render(post);
+
 ---
 
 <BlogPost {...post.data} likes={post.likes} reads={post.reads} hash={post.hash}>
