@@ -2,7 +2,7 @@ import { c as createComponent, r as renderTemplate } from '../chunks/astro/serve
 import 'piccolore';
 import 'clsx';
 import { d as db, P as Post } from '../chunks/_astro_db_BubobXui.mjs';
-import { g as getCollection } from '../chunks/_astro_content_D53dNX-M.mjs';
+import { g as getCollection } from '../chunks/_astro_content_BvVZnnXx.mjs';
 import crypto from 'crypto';
 import { eq } from '@astrojs/db/dist/runtime/virtual.js';
 export { renderers } from '../renderers.mjs';
