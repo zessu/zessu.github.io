@@ -10,15 +10,14 @@ import tailwindcss from "@tailwindcss/vite";
 
 // https://astro.build/config
 export default defineConfig({
-  output: 'static',
+  output: "static",
+  adapter: vercel(),
   site: "https://drew.is-a.dev",
   integrations: [mdx(), sitemap(), db(), seedData()],
-
   prefetch: {
     prefetchAll: true,
     defaultStrategy: "load",
   },
-
   markdown: {
     shikiConfig: {
       themes: {
@@ -27,9 +26,6 @@ export default defineConfig({
       },
     },
   },
-
-  adapter: vercel(),
-
   vite: {
     plugins: [tailwindcss()],
   },
