@@ -157,10 +157,10 @@ const { title, description, pubDate, updatedDate, likes, reads, hash } =
                   <span class="like">Like</span>
                 </span>
                 <span class="count" id="like-count">
-                  {`${likes} likes`}
+                  {`likes: ${likes}`}
                 </span>
                 <span class="count" id="read-count">
-                  {`${reads} reads`}
+                  {`reads: ${reads}`}
                 </span>
               </button>
             </div>
@@ -201,10 +201,10 @@ const { title, description, pubDate, updatedDate, likes, reads, hash } =
           currentReads = stats.reads ?? 0;
           
           if (likeCountContainer) {
-            likeCountContainer.textContent = `${currentLikes} likes`;
+            likeCountContainer.textContent = `likes: ${currentLikes}`;
           }
           if (readCountContainer) {
-            readCountContainer.textContent = `${currentReads} reads`;
+            readCountContainer.textContent = `reads: ${currentReads}`;
           }
         } catch (error) {
           console.error("Failed to fetch post stats:", error);
