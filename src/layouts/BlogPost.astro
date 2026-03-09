@@ -184,15 +184,36 @@ const { title, description, pubDate, updatedDate, likes, reads, hash } =
     <script>
       import { actions } from "astro:actions";
       const dataContainer = document.getElementById("data-container");
-      const articleLikes = dataContainer?.dataset.likes;
       const articleHash = dataContainer?.dataset.hash;
-
-      const likes = articleLikes ? Number(articleLikes) : 0;
       const hash = articleHash ? articleHash : "";
 
-      const increaseCountButton = document.querySelector("span#increaseCount");
-
       const likeCountContainer = document.getElementById("like-count");
+      const readCountContainer = document.getElementById("read-count");
+
+      let currentLikes = 0;
+      let currentReads = 0;
+
+      async function fetchPostStats() {
+        try {
+          const response = await fetch(`/api/get-post-stats?hash=${hash}`);
+          const stats = await response.json();
+          currentLikes = stats.likes ?? 0;
+          currentReads = stats.reads ?? 0;
+          
+          if (likeCountContainer) {
+            likeCountContainer.textContent = `${currentLikes} likes`;
+          }
+          if (readCountContainer) {
+            readCountContainer.textContent = `${currentReads} reads`;
+          }
+        } catch (error) {
+          console.error("Failed to fetch post stats:", error);
+        }
+      }
+
+      fetchPostStats();
+
+      const increaseCountButton = document.querySelector("span#increaseCount");
 
       increaseCountButton?.addEventListener("click", async () => {
         const { data, error } = await actions.likePost({
@@ -200,7 +221,8 @@ const { title, description, pubDate, updatedDate, likes, reads, hash } =
         });
 
         if (data && likeCountContainer) {
-          likeCountContainer.innerHTML = `${likes + 1} likes`;
+          currentLikes += 1;
+          likeCountContainer.textContent = `${currentLikes} likes`;
         }
       });
 

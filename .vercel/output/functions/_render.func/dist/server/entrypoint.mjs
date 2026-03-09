@@ -1,12 +1,12 @@
-import { g as getActionQueryString, a as astroCalledServerError, A as ActionError, d as deserializeActionResult, b as ACTION_QUERY_PARAMS, c as appendForwardSlash } from './chunks/astro-designed-error-pages_CnoX-W89.mjs';
+import { g as getActionQueryString, a as astroCalledServerError, A as ActionError, d as deserializeActionResult, b as ACTION_QUERY_PARAMS, c as appendForwardSlash } from './chunks/astro-designed-error-pages_B5bV0LSi.mjs';
 import 'piccolore';
 import 'es-module-lexer';
-import './chunks/astro/server_D0lsQEZO.mjs';
+import './chunks/astro/server_RxMWdMZu.mjs';
 import 'clsx';
-import { d as db, P as Post } from './chunks/_astro_db_BubobXui.mjs';
+import { d as db, P as Post } from './chunks/_astro_db_BfEb3RNj.mjs';
 import * as z from 'zod';
-import { d as defineAction } from './chunks/server_Ch6U-04c.mjs';
-import { eq } from '@astrojs/db/dist/runtime/virtual.js';
+import { d as defineAction } from './chunks/server_BsVqksLV.mjs';
+import { sql, eq } from '@astrojs/db/dist/runtime/virtual.js';
 
 const internalFetchHeaders = {};
 
@@ -126,16 +126,13 @@ const server = {
       hash: z.string()
     }),
     handler: async (input) => {
-      try {
-        const { hash } = input;
-        const existingPost = await db.select().from(Post).where(eq(Post.id, hash));
-        if (existingPost.length === 0)
-          throw new Error("could not find post with that identifier");
-        await db.update(Post).set({ likes: existingPost[0].likes + 1 }).where(eq(Post.id, hash)).execute();
-        return { message: "success" };
-      } catch (error) {
-        console.log(error);
+      const { hash } = input;
+      const existingPost = await db.select().from(Post).where(eq(Post.id, hash));
+      if (existingPost.length === 0) {
+        throw new ActionError({ code: "NOT_FOUND", message: "Post not found" });
       }
+      await db.update(Post).set({ likes: sql`${Post.likes} + 1` }).where(eq(Post.id, hash)).execute();
+      return { message: "success" };
     }
   }),
   updatePostVisits: defineAction({
@@ -143,16 +140,9 @@ const server = {
       hash: z.string()
     }),
     handler: async (input) => {
-      try {
-        const { hash } = input;
-        const postReads = await db.select().from(Post).where(eq(Post.id, hash));
-        if (postReads.length === 0)
-          throw new Error(`theres a problem with post: ${hash}`);
-        await db.update(Post).set({ reads: postReads[0].reads + 1 }).where(eq(Post.id, hash)).execute();
-        return { message: "success" };
-      } catch (error) {
-        console.log(error);
-      }
+      const { hash } = input;
+      await db.update(Post).set({ reads: sql`${Post.reads} + 1` }).where(eq(Post.id, hash)).execute();
+      return { message: "success" };
     }
   })
 };

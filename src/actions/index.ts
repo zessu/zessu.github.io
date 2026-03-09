@@ -1,5 +1,5 @@
-import { defineAction } from "astro:actions";
-import { db, Post, eq } from "astro:db";
+import { defineAction, ActionError } from "astro:actions";
+import { db, Post, eq, sql } from "astro:db";
 import { z } from "astro:schema";
 
 export const server = {
@@ -8,49 +8,41 @@ export const server = {
       hash: z.string(),
     }),
     handler: async (input) => {
-      try {
-        const { hash } = input;
-        const existingPost = await db
-          .select()
-          .from(Post)
-          .where(eq(Post.id, hash));
+      const { hash } = input;
 
-        if (existingPost.length === 0)
-          throw new Error("could not find post with that identifier");
+      const existingPost = await db
+        .select()
+        .from(Post)
+        .where(eq(Post.id, hash));
 
-        await db
-          .update(Post)
-          .set({ likes: existingPost[0].likes + 1 })
-          .where(eq(Post.id, hash))
-          .execute();
-
-        return { message: "success" };
-      } catch (error) {
-        console.log(error);
+      if (existingPost.length === 0) {
+        throw new ActionError({ code: "NOT_FOUND", message: "Post not found" });
       }
+
+      await db
+        .update(Post)
+        .set({ likes: sql`${Post.likes} + 1` })
+        .where(eq(Post.id, hash))
+        .execute();
+
+      return { message: "success" };
     },
   }),
+
   updatePostVisits: defineAction({
     input: z.object({
       hash: z.string(),
     }),
     handler: async (input) => {
-      try {
-        const { hash } = input;
-        const postReads = await db.select().from(Post).where(eq(Post.id, hash));
+      const { hash } = input;
 
-        if (postReads.length === 0)
-          throw new Error(`theres a problem with post: ${hash}`);
+      await db
+        .update(Post)
+        .set({ reads: sql`${Post.reads} + 1` })
+        .where(eq(Post.id, hash))
+        .execute();
 
-        await db
-          .update(Post)
-          .set({ reads: postReads[0].reads + 1 })
-          .where(eq(Post.id, hash))
-          .execute();
-        return { message: "success" };
-      } catch (error) {
-        console.log(error);
-      }
+      return { message: "success" };
     },
   }),
 };

@@ -22,6 +22,10 @@
 		{
 			"src": "^/_actions(?:/(.*?))?/?$",
 			"dest": "_render"
+		},
+		{
+			"src": "^/api/get-post-stats/?$",
+			"dest": "_render"
 		}
 	]
 }

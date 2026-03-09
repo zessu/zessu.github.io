@@ -4,8 +4,7 @@
   "version": "0.0.1",
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build --remote",
-    "preview": "astro preview",
+    "build": "astro db push --remote && astro build --remote",
     "astro": "astro",
     "deploy": "gh-pages -d dist",
     "init-db": "astro --experimental-scripts scripts/init-db.ts"
