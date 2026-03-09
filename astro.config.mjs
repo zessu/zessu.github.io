@@ -10,6 +10,7 @@ import tailwindcss from "@tailwindcss/vite";
 
 // https://astro.build/config
 export default defineConfig({
+  output: 'static',
   site: "https://drew.is-a.dev",
   integrations: [mdx(), sitemap(), db(), seedData()],
 
