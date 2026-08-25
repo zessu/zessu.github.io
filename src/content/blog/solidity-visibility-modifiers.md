@@ -4,9 +4,9 @@ description: "Visibility Modifiers In Solidity"
 pubDate: "August 25 2026"
 ---
 
-Visibility modifiers e.g `public` `private` `internal` and `external` allow us to create more robust applications by specifying access control for the public/derived contracts for our variables and functions.
+Visibility modifiers e.g `public` `private` `internal` and `external` allow us to create more robust applications by specifying access control for variables and functions in our contracts.
 
-It can be confusing to understand when to use what as there are cases where they overlap. e.g should we use public or external, private or internal. There are also concerns about what to use when it comes to child contracts or abstract contracts. Clarity is achieved through by reading lots of contracts and writing lots of code since their use is informed more by the requirements at hand. It can be confusing to know what to use and when. I will break down common patterns across different contracts to provide more clarity.
+It can be confusing to understand when to use what as there are cases where their use might seem to overlap. e.g should we use public or external, private or internal. There are also concerns about the right strategy when it comes to child contracts or abstract contracts. Clarity is achieved through reading lots of contracts and writing lots of code since their use is informed more by the requirements at hand. In this article, I will break down common patterns that you will find across different real world contracts to provide more clarity.
 
 You can generally think of these visibility modifiers as split into two groups `public/external` and `internal/private`
 
@@ -16,14 +16,7 @@ You can generally think of these visibility modifiers as split into two groups `
 
 You should think of external as a subset of public
 
-```mermaid
-flowchart TD
-    subgraph Public["Public Functions"]
-        External["External Functions"]
-    end
-
-    Public --> External
-```
+<img src="/images/solidity-visibility/public-external.png" alt="Diagram showing external functions as a subset of public functions" style="max-width: 100%; height: auto;">
 
 <br />
 
@@ -51,7 +44,11 @@ contract Voting {
 The external visibility modifier is used to signal that a function should only be called by third parties. i.e. The function should only be called from the outside and not from within. This of course means only accessing functions marked as external through external users calls or through external contract function calls.
 
 ```solidity
-function transfer(address to, uint256 value) external returns (bool); // this is a function that users are meant to call. Marking it external communicates this intent to readers 🚨 NOTE: if your contracts might need to call transfer itself -we would make it public instead but if the contract itself will never call this we use external instead
+// this is a function that users are meant to call.
+// Marking it external communicates this intent to readers
+//🚨 if your contracts might need to call transfer itself - we would make it public instead
+// if the contract itself will never call this we should use external
+function transfer(address to, uint256 value) external returns (bool);
 function allowance(address owner, address spender) external view returns (uint256);
 ```
 
@@ -92,7 +89,7 @@ contract Example {
     function process(uint256[] calldata data) external pure returns (uint256) {
     // data is available as part of the calling of this function
     // we can check the transaction to get the calldata and access data
-        // ⛽ Cheaper! Data stays in calldata, we don't need to copy into memory, memory has a cost to use
+    // ⛽ Cheaper! Data stays in calldata, we don't need to copy into memory, memory has a cost to use
 
         return data[0];
     }
@@ -109,14 +106,7 @@ This cost difference is the practical reason the distinction matters. Copying ar
 
 It might help to think of private as a subset of internal
 
-```mermaid
-flowchart TD
-    subgraph Internal["Internal Functions"]
-        Private["Private Functions"]
-    end
-
-    Internal --> Private
-```
+<img src="/images/solidity-visibility/internal-private.png" alt="Diagram showing private functions as a subset of internal functions" style="max-width: 100%; height: auto;">
 
 <br />
 
@@ -146,7 +136,8 @@ contract MyToken {
         _transfer(from, to, amount);
     }
 
- // called by transfer and transferFrom. We want to re-use this across different functions, implemented internally and only called after we have completed our checks. This can also be used by child contracts
+ // called by transfer and transferFrom. We want to re-use this across different functions
+//  implemented internally and only called after we have completed our checks. This can also be used by child contracts
  // we might expose public facing functions to our users, perform some validation and only then call internal functions
     function _transfer(
         address from,
@@ -163,7 +154,7 @@ contract MyToken {
 
 <br />
 
-You'll often see a pattern where contracts have `public or external` functions e.g `mint()` or `burn()` that have their corresponding internal `_mint()` and `_burn()` functions. The main functions are defined as `public` or `external` and are called directly by the user, the function then does some logic before calling the corresponding reusable function prefixed with an underscore.
+You'll often see a pattern where contracts have `public` or `external` functions e.g `mint()` or `burn()` that have their corresponding internal `_mint()` and `_burn()` functions. The main functions are defined as `public` or `external` and are called directly by the user, the function then does some logic before calling the corresponding reusable function prefixed with an underscore.
 
 Internal also makes a lot of sense when used with child contracts.
 
